@@ -23,6 +23,10 @@ app.use('/css', express.static(path.join(__dirname, '../frontend/css')));
 // Static files for frontend - JavaScript
 app.use('/js', express.static(path.join(__dirname, '../frontend/js')));
 
+
+// Serve assets (images, logos etc)
+app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
+
 // Static files for frontend - Public (HTML files)
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 
