@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bihar Public Service Commission - Official Portal</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="government-header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="logo-section">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Emblem_of_Bihar.svg/1200px-Emblem_of_Bihar.svg.png" alt="Bihar Government Emblem" class="emblem">
+                        <div class="header-title">
+                            <h1>Bihar Public Service Commission</h1>
+                            <p class="subtitle">बिहार लोक सेवा आयोग</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <select class="language-select" id="languageSelect">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                        </select>
+                        <button class="btn btn-primary" id="loginBtn">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="main-navigation">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#announcements">Announcements</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Notice Strip -->
+    <div class="notice-strip">
+        <div class="container">
+            <div class="notice-content">
+                <span class="notice-label">Latest Updates:</span>
+                <div class="scrolling-notices" id="scrollingNotices">
+                    <marquee behavior="scroll" direction="left" scrollamount="5">
+                        <span class="notice-item">BPSC Recruitment 2024 - Applications Invited</span>
+                        <span class="notice-separator">|</span>
+                        <span class="notice-item">Combined Competitive Exam 2024 - Schedule Released</span>
+                        <span class="notice-separator">|</span>
+                        <span class="notice-item">Interview Schedule for Various Posts Available</span>
+                        <span class="notice-separator">|</span>
+                        <span class="notice-item">New Online Portal Launched for Citizen Services</span>
+                    </marquee>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="container">
+            <div class="content-wrapper">
+                <!-- Left Sidebar -->
+                <aside class="left-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Quick Links</h3>
+                        <ul class="sidebar-menu">
+                            <li><a href="#">Online Application</a></li>
+                            <li><a href="#">Check Application Status</a></li>
+                            <li><a href="#">Download Admit Card</a></li>
+                            <li><a href="#">Result Directory</a></li>
+                            <li><a href="#">Answer Keys</a></li>
+                            <li><a href="#">Cut-off Marks</a></li>
+                            <li><a href="#">Exam Calendar</a></li>
+                            <li><a href="#">Syllabus</a></li>
+                            <li><a href="#">Previous Year Papers</a></li>
+                            <li><a href="#">Important Forms</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Downloads</h3>
+                        <ul class="sidebar-menu">
+                            <li><a href="#">Annual Report 2023</a></li>
+                            <li><a href="#">Office Memorandum</a></li>
+                            <li><a href="#">RTI Act 2005</a></li>
+                            <li><a href="#">Citizen Charter</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Main Content Area -->
+                <main class="content-area">
+                    <!-- Hero Section -->
+                    <section class="hero-section">
+                        <div class="hero-slider">
+                            <div class="hero-slide active">
+                                <div class="hero-content">
+                                    <h2>Welcome to Bihar Public Service Commission</h2>
+                                    <p>Committed to Excellence in Public Service</p>
+                                </div>
+                            </div>
+                            <div class="hero-slide">
+                                <div class="hero-content">
+                                    <h2>Recruitment Notifications</h2>
+                                    <p>Apply for Latest Government Job Opportunities</p>
+                                </div>
+                            </div>
+                            <div class="hero-slide">
+                                <div class="hero-content">
+                                    <h2>Online Services</h2>
+                                    <p>Access Government Services from Anywhere</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- What's New Section -->
+                    <section class="whats-new-section">
+                        <h2 class="section-title">What's New</h2>
+                        <div class="whats-new-grid" id="whatsNew">
+                            <div class="whats-new-card">
+                                <span class="new-badge">NEW</span>
+                                <h4>BPSC Recruitment 2024</h4>
+                                <p>Applications invited for various posts. Last date to apply...</p>
+                                <a href="#" class="read-more">Read More</a>
+                            </div>
+                            <div class="whats-new-card">
+                                <span class="new-badge">NEW</span>
+                                <h4>Exam Schedule Released</h4>
+                                <p>Combined Competitive Preliminary Exam scheduled for February...</p>
+                                <a href="#" class="read-more">Read More</a>
+                            </div>
+                            <div class="whats-new-card">
+                                <span class="new-badge">NEW</span>
+                                <h4>Result Declaration</h4>
+                                <p>Written result for various posts declared. Check now...</p>
+                                <a href="#" class="read-more">Read More</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Announcements Section -->
+                    <section class="announcements-section" id="announcements">
+                        <h2 class="section-title">Latest Announcements</h2>
+                        <div class="announcements-list" id="announcementsList">
+                            <div class="announcement-item">
+                                <div class="announcement-date">15 Jan 2024</div>
+                                <div class="announcement-content">
+                                    <h4><a href="#">BPSC Recruitment 2024 - Apply Online</a></h4>
+                                    <p>The Bihar Public Service Commission invites applications for various posts...</p>
+                                    <span class="category-tag recruitment">Recruitment</span>
+                                </div>
+                            </div>
+                            <div class="announcement-item">
+                                <div class="announcement-date">10 Jan 2024</div>
+                                <div class="announcement-content">
+                                    <h4><a href="#">Examination Schedule for Combined Competitive Exam</a></h4>
+                                    <p>The preliminary examination for the Combined Competitive Exam 2024 will be held...</p>
+                                    <span class="category-tag notice">Notice</span>
+                                </div>
+                            </div>
+                            <div class="announcement-item">
+                                <div class="announcement-date">05 Jan 2024</div>
+                                <div class="announcement-content">
+                                    <h4><a href="#">Result Declaration - Interview Schedule</a></h4>
+                                    <p>The result of the written examination for various posts has been declared...</p>
+                                    <span class="category-tag result">Result</span>
+                                </div>
+                            </div>
+                            <div class="announcement-item">
+                                <div class="announcement-date">01 Jan 2024</div>
+                                <div class="announcement-content">
+                                    <h4><a href="#">Office Holiday List 2024</a></h4>
+                                    <p>The list of holidays for the year 2024 has been published...</p>
+                                    <span class="category-tag circular">Circular</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="view-all-container">
+                            <a href="#announcements" class="btn btn-secondary">View All Announcements</a>
+                        </div>
+                    </section>
+
+                    <!-- Statistics Section -->
+                    <section class="statistics-section">
+                        <h2 class="section-title">Statistics</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">15,000+</div>
+                                <div class="stat-label">Applications Received</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">Posts Filled</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">Recruitment Drives</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">1M+</div>
+                                <div class="stat-label">Citizens Served</div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+
+                <!-- Right Sidebar -->
+                <aside class="right-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Online Services</h3>
+                        <div class="service-buttons">
+                            <button class="service-btn">Apply Online</button>
+                            <button class="service-btn">Track Application</button>
+                            <button class="service-btn">Download Hall Ticket</button>
+                            <button class="service-btn">Check Result</button>
+                            <button class="service-btn">Grievance Portal</button>
+                        </div>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Important Links</h3>
+                        <ul class="sidebar-menu">
+                            <li><a href="#">National Career Service</a></li>
+                            <li><a href="#">UIDAI</a></li>
+                            <li><a href="#">EPFO</a></li>
+                            <li><a href="#">Income Tax Department</a></li>
+                            <li><a href="#">NSDL</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Social Media</h3>
+                        <div class="social-links">
+                            <a href="#" class="social-link">Facebook</a>
+                            <a href="#" class="social-link">Twitter</a>
+                            <a href="#" class="social-link">YouTube</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>Commission Office</h3>
+                    <p><strong>Bihar Public Service Commission</strong></p>
+                    <p>15, Nehru Marg (Baily Road)</p>
+                    <p>Patna - 800001, Bihar, India</p>
+                    <p>Phone: +91-612-2215015</p>
+                    <p>Email: bpsc@bihar.gov.in</p>
+                </div>
+                <div class="contact-card">
+                    <h3>Working Hours</h3>
+                    <p>Monday to Friday: 10:00 AM - 05:00 PM</p>
+                    <p>Saturday: 10:00 AM - 01:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+                <div class="contact-card">
+                    <h3>Help Desk</h3>
+                    <p>Toll Free: 1800-XXX-XXXX</p>
+                    <p>Email: helpdesk@bpsc.gov.in</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="government-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About BPSC</h4>
+                    <p>The Bihar Public Service Commission was established in 1956. It conducts various examinations for recruitment to the services of the Government of Bihar.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">RTI</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Important Pages</h4>
+                    <ul>
+                        <li><a href="#">Current Openings</a></li>
+                        <li><a href="#">Exam Results</a></li>
+                        <li><a href="#">Advertisements</a></li>
+                        <li><a href="#">Forms Download</a></li>
+                        <li><a href="#">Contact Directory</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="footer-social">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">YouTube</a>
+                    </div>
+                    <p class="visitor-counter">Visitors: 1,234,567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Bihar Public Service Commission. All Rights Reserved.</p>
+                <p>Designed & Developed by IT Division, BPSC</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeModal">&times;</span>
+            <h2>Login to Portal</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email ID</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+            <div class="login-options">
+                <a href="#">Forgot Password?</a>
+                <span>|</span>
+                <a href="#">Register New Account</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>

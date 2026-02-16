@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - BPSC Portal</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Admin Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Emblem_of_Bihar.svg/1200px-Emblem_of_Bihar.svg.png" alt="Bihar Government Emblem" class="emblem-small">
+                <span class="logo-text">BPSC Admin</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="search-box">
+                <input type="text" placeholder="Search...">
+            </div>
+            <button class="notification-btn">🔔 <span class="badge">3</span></button>
+            <div class="user-profile" id="userProfile">
+                <img src="https://via.placeholder.com/40" alt="Admin" class="user-avatar">
+                <span class="user-name">Admin Officer</span>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#users">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-text">Manage Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#announcements">
+                            <span class="nav-icon">📢</span>
+                            <span class="nav-text">Announcements</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tasks">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#documents">
+                            <span class="nav-icon">📁</span>
+                            <span class="nav-text">Documents</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#reports">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">Reports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings">
+                            <span class="nav-icon">⚙️</span>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/" class="back-to-site">← Back to Website</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Dashboard Section -->
+            <section class="dashboard-section active" id="dashboard">
+                <div class="section-header">
+                    <h1>Admin Dashboard</h1>
+                    <p>Welcome back, Admin Officer</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #0f3c75;">👥</div>
+                        <div class="stat-info">
+                            <h3>Total Users</h3>
+                            <p class="stat-number">156</p>
+                            <p class="stat-change positive">+12 this month</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #28a745;">📢</div>
+                        <div class="stat-info">
+                            <h3>Active Announcements</h3>
+                            <p class="stat-number">24</p>
+                            <p class="stat-change">5 new this week</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #ffc107;">📋</div>
+                        <div class="stat-info">
+                            <h3>Pending Tasks</h3>
+                            <p class="stat-number">18</p>
+                            <p class="stat-change negative">8 overdue</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #17a2b8;">📁</div>
+                        <div class="stat-info">
+                            <h3>Documents</h3>
+                            <p class="stat-number">89</p>
+                            <p class="stat-change">+15 this month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Recent Announcements</h3>
+                            <a href="#announcements" class="view-all">View All</a>
+                        </div>
+                        <div class="card-content">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>BPSC Recruitment 2024</td>
+                                        <td><span class="tag recruitment">Recruitment</span></td>
+                                        <td><span class="tag active">Active</span></td>
+                                        <td>15 Jan 2024</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Exam Schedule</td>
+                                        <td><span class="tag notice">Notice</span></td>
+                                        <td><span class="tag active">Active</span></td>
+                                        <td>10 Jan 2024</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Result Declaration</td>
+                                        <td><span class="tag result">Result</span></td>
+                                        <td><span class="tag active">Active</span></td>
+                                        <td>05 Jan 2024</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Task Overview</h3>
+                            <a href="#tasks" class="view-all">View All</a>
+                        </div>
+                        <div class="card-content">
+                            <div class="task-summary">
+                                <div class="task-stat">
+                                    <span class="task-count">12</span>
+                                    <span class="task-label">Pending</span>
+                                </div>
+                                <div class="task-stat">
+                                    <span class="task-count">5</span>
+                                    <span class="task-label">In Progress</span>
+                                </div>
+                                <div class="task-stat">
+                                    <span class="task-count">8</span>
+                                    <span class="task-label">Completed</span>
+                                </div>
+                                <div class="task-stat">
+                                    <span class="task-count">3</span>
+                                    <span class="task-label">Overdue</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users by Department -->
+                <div class="dashboard-card full-width">
+                    <div class="card-header">
+                        <h3>Users by Department</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="department-stats">
+                            <div class="dept-item">
+                                <span class="dept-name">Administration</span>
+                                <div class="dept-bar"><div class="dept-fill" style="width: 30%;"></div></div>
+                                <span class="dept-count">15</span>
+                            </div>
+                            <div class="dept-item">
+                                <span class="dept-name">Finance</span>
+                                <div class="dept-bar"><div class="dept-fill" style="width: 25%;"></div></div>
+                                <span class="dept-count">12</span>
+                            </div>
+                            <div class="dept-item">
+                                <span class="dept-name">HR</span>
+                                <div class="dept-bar"><div class="dept-fill" style="width: 20%;"></div></div>
+                                <span class="dept-count">10</span>
+                            </div>
+                            <div class="dept-item">
+                                <span class="dept-name">IT</span>
+                                <div class="dept-bar"><div class="dept-fill" style="width: 15%;"></div></div>
+                                <span class="dept-count">8</span>
+                            </div>
+                            <div class="dept-item">
+                                <span class="dept-name">Operations</span>
+                                <div class="dept-bar"><div class="dept-fill" style="width: 10%;"></div></div>
+                                <span class="dept-count">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section class="dashboard-section" id="users">
+                <div class="section-header">
+                    <h1>Manage Users</h1>
+                    <button class="btn btn-primary" id="addUserBtn">+ Add New User</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="filter-group">
+                            <select class="filter-select">
+                                <option>All Roles</option>
+                                <option>Super Admin</option>
+                                <option>Admin</option>
+                                <option>Employee</option>
+                                <option>User</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>All Departments</option>
+                                <option>Administration</option>
+                                <option>Finance</option>
+                                <option>HR</option>
+                                <option>IT</option>
+                            </select>
+                            <input type="text" placeholder="Search users..." class="search-input">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>BPSC001</td>
+                                    <td>Chief Secretary</td>
+                                    <td>superadmin@bpsc.gov.in</td>
+                                    <td><span class="tag superadmin">Super Admin</span></td>
+                                    <td>Administration</td>
+                                    <td><span class="tag active">Active</span></td>
+                                    <td>
+                                        <button class="action-btn">Edit</button>
+                                        <button class="action-btn danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>BPSC002</td>
+                                    <td>Admin Officer</td>
+                                    <td>admin@bpsc.gov.in</td>
+                                    <td><span class="tag admin">Admin</span></td>
+                                    <td>Administration</td>
+                                    <td><span class="tag active">Active</span></td>
+                                    <td>
+                                        <button class="action-btn">Edit</button>
+                                        <button class="action-btn danger">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>BPSC101</td>
+                                    <td>John Sharma</td>
+                                    <td>employee1@bpsc.gov.in</td>
+                                    <td><span class="tag employee">Employee</span></td>
+                                    <td>Finance</td>
+                                    <td><span class="tag active">Active</span></td>
+                                    <td>
+                                        <button class="action-btn">Edit</button>
+                                        <button class="action-btn danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Announcements Section -->
+            <section class="dashboard-section" id="announcements">
+                <div class="section-header">
+                    <h1>Manage Announcements</h1>
+                    <button class="btn btn-primary" id="addAnnouncementBtn">+ New Announcement</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Views</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>BPSC Recruitment 2024</td>
+                                    <td><span class="tag recruitment">Recruitment</span></td>
+                                    <td><span class="priority urgent">Urgent</span></td>
+                                    <td><span class="tag published">Published</span></td>
+                                    <td>1,234</td>
+                                    <td>15 Jan 2024</td>
+                                    <td>
+                                        <button class="action-btn">Edit</button>
+                                        <button class="action-btn danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section class="dashboard-section" id="tasks">
+                <div class="section-header">
+                    <h1>Manage Tasks</h1>
+                    <button class="btn btn-primary" id="addTaskBtn">+ Assign New Task</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Task ID</th>
+                                    <th>Title</th>
+                                    <th>Assigned To</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>TSK001</td>
+                                    <td>Prepare Quarterly Financial Report</td>
+                                    <td>John Sharma</td>
+                                    <td><span class="priority high">High</span></td>
+                                    <td><span class="status in-progress">In Progress</span></td>
+                                    <td>22 Jan 2024</td>
+                                    <td>
+                                        <button class="action-btn">Edit</button>
+                                        <button class="action-btn danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documents Section -->
+            <section class="dashboard-section" id="documents">
+                <div class="section-header">
+                    <h1>Manage Documents</h1>
+                    <button class="btn btn-primary" id="uploadDocBtn">↑ Upload Document</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Document Name</th>
+                                    <th>Category</th>
+                                    <th>Department</th>
+                                    <th>Uploaded By</th>
+                                    <th>Size</th>
+                                    <th>Downloads</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Annual Report 2023.pdf</td>
+                                    <td>Report</td>
+                                    <td>Administration</td>
+                                    <td>Chief Secretary</td>
+                                    <td>2.5 MB</td>
+                                    <td>456</td>
+                                    <td>
+                                        <button class="action-btn">Download</button>
+                                        <button class="action-btn danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="dashboard-section" id="settings">
+                <div class="section-header">
+                    <h1>Settings</h1>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Profile Settings</h3>
+                        </div>
+                        <div class="card-content">
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" value="Admin Officer">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" value="admin@bpsc.gov.in">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
