@@ -518,6 +518,111 @@ a:hover {
 }
 
 /* ========================================
+   Chairman Profile Section
+   ======================================== */
+
+.gov-profile-section {
+    background-color: var(--white);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.gov-profile-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.gov-profile-image-container {
+    display: flex;
+    justify-content: center;
+}
+
+.gov-profile-image {
+    width: 100%;
+    max-width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: var(--shadow-md);
+    border: 3px solid var(--primary-blue);
+}
+
+.gov-profile-content {
+    padding: var(--spacing-md) 0;
+}
+
+.gov-profile-name {
+    font-size: 1.75rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-xs);
+}
+
+.gov-profile-designation {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--light-blue);
+}
+
+.gov-profile-bio p {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-md);
+}
+
+.gov-profile-bio p:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive styles for Chairman Profile */
+@media (max-width: 768px) {
+    .gov-profile-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    .gov-profile-image {
+        max-width: 220px;
+        height: 220px;
+    }
+
+    .gov-profile-content {
+        text-align: center;
+    }
+
+    .gov-profile-name {
+        font-size: 1.5rem;
+    }
+
+    .gov-profile-designation {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .gov-profile-section {
+        padding: var(--spacing-lg);
+    }
+
+    .gov-profile-image {
+        max-width: 180px;
+        height: 180px;
+    }
+
+    .gov-profile-name {
+        font-size: 1.25rem;
+    }
+}
+
+/* ========================================
    Contact Section
    ======================================== */
 
