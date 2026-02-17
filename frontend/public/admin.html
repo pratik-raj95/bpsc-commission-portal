@@ -6,6 +6,7 @@
     <title>Admin Dashboard - BPSC Portal</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="dashboard-body">
     <!-- Admin Header -->
@@ -19,13 +20,38 @@
         </div>
         <div class="header-right">
             <div class="search-box">
-                <input type="text" placeholder="Search...">
+                <input type="text" placeholder="Search..." id="globalSearch">
             </div>
-            <button class="notification-btn">🔔 <span class="badge">3</span></button>
+            <button class="notification-btn">🔔 <span class="badge" id="notificationCount">0</span></button>
             <div class="user-profile" id="userProfile">
-                <img src="https://via.placeholder.com/40" alt="Admin" class="user-avatar">
-                <span class="user-name">Admin Officer</span>
+                <img src="https://via.placeholder.com/40" alt="Admin" class="user-avatar" id="headerProfileImage">
+                <span class="user-name" id="headerUserName">Admin</span>
                 <span class="dropdown-arrow">▼</span>
+            </div>
+            <!-- Profile Dropdown Menu -->
+            <div class="profile-dropdown" id="profileDropdown">
+                <div class="dropdown-header">
+                    <img src="https://via.placeholder.com/60" alt="Profile" id="dropdownProfileImage">
+                    <div>
+                        <h4 id="dropdownUserName">Admin</h4>
+                        <p id="dropdownUserDesignation">Admin Officer</p>
+                    </div>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="#profile" class="dropdown-item" id="viewProfileBtn">
+                        <span class="dropdown-icon">👤</span> View Profile
+                    </a>
+                    <a href="#edit-profile" class="dropdown-item" id="editProfileBtn">
+                        <span class="dropdown-icon">✏️</span> Edit Profile
+                    </a>
+                    <a href="#settings" class="dropdown-item">
+                        <span class="dropdown-icon">⚙️</span> Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item logout" id="logoutBtn">
+                        <span class="dropdown-icon">🚪</span> Logout
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -43,15 +69,21 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#profile">
+                            <span class="nav-icon">👤</span>
+                            <span class="nav-text">My Profile</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#users">
                             <span class="nav-icon">👥</span>
                             <span class="nav-text">Manage Users</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#announcements">
-                            <span class="nav-icon">📢</span>
-                            <span class="nav-text">Announcements</span>
+                        <a href="#projects">
+                            <span class="nav-icon">📁</span>
+                            <span class="nav-text">Projects</span>
                         </a>
                     </li>
                     <li>
@@ -61,21 +93,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#announcements">
+                            <span class="nav-icon">📢</span>
+                            <span class="nav-text">Announcements</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#documents">
-                            <span class="nav-icon">📁</span>
+                            <span class="nav-icon">📄</span>
                             <span class="nav-text">Documents</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#reports">
-                            <span class="nav-icon">📈</span>
-                            <span class="nav-text">Reports</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#settings">
-                            <span class="nav-icon">⚙️</span>
-                            <span class="nav-text">Settings</span>
                         </a>
                     </li>
                 </ul>
@@ -91,41 +117,77 @@
             <section class="dashboard-section active" id="dashboard">
                 <div class="section-header">
                     <h1>Admin Dashboard</h1>
-                    <p>Welcome back, Admin Officer</p>
+                    <p>Welcome back, <span id="dashboardUserName">Admin</span></p>
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="stats-grid">
+                <div class="stats-grid" id="statsGrid">
                     <div class="stat-card">
                         <div class="stat-icon" style="background: #0f3c75;">👥</div>
                         <div class="stat-info">
-                            <h3>Total Users</h3>
-                            <p class="stat-number">156</p>
-                            <p class="stat-change positive">+12 this month</p>
+                            <h3>Total Employees</h3>
+                            <p class="stat-number" id="totalEmployees">0</p>
+                            <p class="stat-change" id="employeesChange">Loading...</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="background: #28a745;">📢</div>
+                        <div class="stat-icon" style="background: #28a745;">📁</div>
                         <div class="stat-info">
-                            <h3>Active Announcements</h3>
-                            <p class="stat-number">24</p>
-                            <p class="stat-change">5 new this week</p>
+                            <h3>Total Projects</h3>
+                            <p class="stat-number" id="totalProjects">0</p>
+                            <p class="stat-change" id="projectsChange">Loading...</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="background: #ffc107;">📋</div>
                         <div class="stat-info">
-                            <h3>Pending Tasks</h3>
-                            <p class="stat-number">18</p>
-                            <p class="stat-change negative">8 overdue</p>
+                            <h3>Total Tasks</h3>
+                            <p class="stat-number" id="totalTasks">0</p>
+                            <p class="stat-change" id="tasksChange">Loading...</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="background: #17a2b8;">📁</div>
+                        <div class="stat-icon" style="background: #17a2b8;">✅</div>
                         <div class="stat-info">
-                            <h3>Documents</h3>
-                            <p class="stat-number">89</p>
-                            <p class="stat-change">+15 this month</p>
+                            <h3>Completed Tasks</h3>
+                            <p class="stat-number" id="completedTasks">0</p>
+                            <p class="stat-change" id="completedTasksChange">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #fd7e14;">⏳</div>
+                        <div class="stat-info">
+                            <h3>Pending Tasks</h3>
+                            <p class="stat-number" id="pendingTasks">0</p>
+                            <p class="stat-change" id="pendingTasksChange">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #6610f2;">📈</div>
+                        <div class="stat-info">
+                            <h3>Work Progress</h3>
+                            <p class="stat-number" id="workProgress">0%</p>
+                            <p class="stat-change">Overall</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Task Status Overview</h3>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="taskStatusChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Project Status Overview</h3>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="projectStatusChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -147,24 +209,9 @@
                                         <th>Date</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="announcementsTableBody">
                                     <tr>
-                                        <td>BPSC Recruitment 2024</td>
-                                        <td><span class="tag recruitment">Recruitment</span></td>
-                                        <td><span class="tag active">Active</span></td>
-                                        <td>15 Jan 2024</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Exam Schedule</td>
-                                        <td><span class="tag notice">Notice</span></td>
-                                        <td><span class="tag active">Active</span></td>
-                                        <td>10 Jan 2024</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Result Declaration</td>
-                                        <td><span class="tag result">Result</span></td>
-                                        <td><span class="tag active">Active</span></td>
-                                        <td>05 Jan 2024</td>
+                                        <td colspan="4" class="loading">Loading...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -179,19 +226,19 @@
                         <div class="card-content">
                             <div class="task-summary">
                                 <div class="task-stat">
-                                    <span class="task-count">12</span>
+                                    <span class="task-count" id="taskPending">0</span>
                                     <span class="task-label">Pending</span>
                                 </div>
                                 <div class="task-stat">
-                                    <span class="task-count">5</span>
+                                    <span class="task-count" id="taskInProgress">0</span>
                                     <span class="task-label">In Progress</span>
                                 </div>
                                 <div class="task-stat">
-                                    <span class="task-count">8</span>
+                                    <span class="task-count" id="taskCompleted">0</span>
                                     <span class="task-label">Completed</span>
                                 </div>
                                 <div class="task-stat">
-                                    <span class="task-count">3</span>
+                                    <span class="task-count" id="taskOverdue">0</span>
                                     <span class="task-label">Overdue</span>
                                 </div>
                             </div>
@@ -202,34 +249,106 @@
                 <!-- Users by Department -->
                 <div class="dashboard-card full-width">
                     <div class="card-header">
-                        <h3>Users by Department</h3>
+                        <h3>Employees by Department</h3>
                     </div>
                     <div class="card-content">
-                        <div class="department-stats">
-                            <div class="dept-item">
-                                <span class="dept-name">Administration</span>
-                                <div class="dept-bar"><div class="dept-fill" style="width: 30%;"></div></div>
-                                <span class="dept-count">15</span>
+                        <canvas id="departmentChart" height="80"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section class="dashboard-section" id="profile">
+                <div class="section-header">
+                    <h1>My Profile</h1>
+                </div>
+                <div class="profile-container">
+                    <div class="profile-header-card">
+                        <div class="profile-cover"></div>
+                        <div class="profile-info-section">
+                            <div class="profile-image-container">
+                                <img src="https://via.placeholder.com/150" alt="Profile" id="profileImage" class="profile-avatar-large">
+                                <button class="change-photo-btn" id="changePhotoBtn">📷</button>
                             </div>
-                            <div class="dept-item">
-                                <span class="dept-name">Finance</span>
-                                <div class="dept-bar"><div class="dept-fill" style="width: 25%;"></div></div>
-                                <span class="dept-count">12</span>
+                            <div class="profile-details">
+                                <h2 id="profileFullName">Admin</h2>
+                                <p class="profile-designation" id="profileDesignation">Admin Officer</p>
+                                <p class="profile-department" id="profileDepartment">Administration</p>
+                                <span class="tag admin" id="profileRole">Admin</span>
                             </div>
-                            <div class="dept-item">
-                                <span class="dept-name">HR</span>
-                                <div class="dept-bar"><div class="dept-fill" style="width: 20%;"></div></div>
-                                <span class="dept-count">10</span>
+                        </div>
+                    </div>
+                    <div class="profile-content-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Personal Information</h3>
+                                <button class="btn btn-primary btn-sm" id="editPersonalInfoBtn">Edit</button>
                             </div>
-                            <div class="dept-item">
-                                <span class="dept-name">IT</span>
-                                <div class="dept-bar"><div class="dept-fill" style="width: 15%;"></div></div>
-                                <span class="dept-count">8</span>
+                            <div class="card-content">
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <label>Full Name</label>
+                                        <span id="infoFullName">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Email</label>
+                                        <span id="infoEmail">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Phone</label>
+                                        <span id="infoPhone">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Contact Number</label>
+                                        <span id="infoContactNumber">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Address</label>
+                                        <span id="infoAddress">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Employee ID</label>
+                                        <span id="infoEmployeeId">-</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="dept-item">
-                                <span class="dept-name">Operations</span>
-                                <div class="dept-bar"><div class="dept-fill" style="width: 10%;"></div></div>
-                                <span class="dept-count">5</span>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Bio</h3>
+                                <button class="btn btn-primary btn-sm" id="editBioBtn">Edit</button>
+                            </div>
+                            <div class="card-content">
+                                <p id="profileBio" class="bio-text">No bio added yet.</p>
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Account Information</h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <label>Role</label>
+                                        <span id="infoRole">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Department</label>
+                                        <span id="infoDepartment">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Designation</label>
+                                        <span id="infoDesignation">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Account Created</label>
+                                        <span id="infoCreatedAt">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Last Login</label>
+                                        <span id="infoLastLogin">-</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -245,75 +364,150 @@
                 <div class="dashboard-card">
                     <div class="card-header">
                         <div class="filter-group">
-                            <select class="filter-select">
-                                <option>All Roles</option>
-                                <option>Super Admin</option>
-                                <option>Admin</option>
-                                <option>Employee</option>
-                                <option>User</option>
+                            <select class="filter-select" id="roleFilter">
+                                <option value="">All Roles</option>
+                                <option value="superadmin">Super Admin</option>
+                                <option value="admin">Admin</option>
+                                <option value="employee">Employee</option>
+                                <option value="user">User</option>
                             </select>
-                            <select class="filter-select">
-                                <option>All Departments</option>
-                                <option>Administration</option>
-                                <option>Finance</option>
-                                <option>HR</option>
-                                <option>IT</option>
+                            <select class="filter-select" id="departmentFilter">
+                                <option value="">All Departments</option>
+                                <option value="Administration">Administration</option>
+                                <option value="Finance">Finance</option>
+                                <option value="HR">HR</option>
+                                <option value="IT">IT</option>
+                                <option value="Operations">Operations</option>
                             </select>
-                            <input type="text" placeholder="Search users..." class="search-input">
+                            <input type="text" placeholder="Search users..." class="search-input" id="userSearch">
                         </div>
                     </div>
                     <div class="card-content">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Employee ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Department</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>BPSC001</td>
-                                    <td>Chief Secretary</td>
-                                    <td>superadmin@bpsc.gov.in</td>
-                                    <td><span class="tag superadmin">Super Admin</span></td>
-                                    <td>Administration</td>
-                                    <td><span class="tag active">Active</span></td>
-                                    <td>
-                                        <button class="action-btn">Edit</button>
-                                        <button class="action-btn danger">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BPSC002</td>
-                                    <td>Admin Officer</td>
-                                    <td>admin@bpsc.gov.in</td>
-                                    <td><span class="tag admin">Admin</span></td>
-                                    <td>Administration</td>
-                                    <td><span class="tag active">Active</span></td>
-                                    <td>
-                                        <button class="action-btn">Edit</button>
-                                        <button class="action-btn danger">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BPSC101</td>
-                                    <td>John Sharma</td>
-                                    <td>employee1@bpsc.gov.in</td>
-                                    <td><span class="tag employee">Employee</span></td>
-                                    <td>Finance</td>
-                                    <td><span class="tag active">Active</span></td>
-                                    <td>
-                                        <button class="action-btn">Edit</button>
-                                        <button class="action-btn danger">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Employee ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Department</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <tr>
+                                        <td colspan="7" class="loading">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" id="usersPagination"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section class="dashboard-section" id="projects">
+                <div class="section-header">
+                    <h1>Manage Projects</h1>
+                    <button class="btn btn-primary" id="addProjectBtn">+ New Project</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="filter-group">
+                            <select class="filter-select" id="projectStatusFilter">
+                                <option value="">All Status</option>
+                                <option value="planning">Planning</option>
+                                <option value="active">Active</option>
+                                <option value="on_hold">On Hold</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <select class="filter-select" id="projectDeptFilter">
+                                <option value="">All Departments</option>
+                                <option value="Administration">Administration</option>
+                                <option value="Finance">Finance</option>
+                                <option value="HR">HR</option>
+                                <option value="IT">IT</option>
+                                <option value="Operations">Operations</option>
+                            </select>
+                            <input type="text" placeholder="Search projects..." class="search-input" id="projectSearch">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <th>Department</th>
+                                        <th>Start Date</th>
+                                        <th>Deadline</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projectsTableBody">
+                                    <tr>
+                                        <td colspan="7" class="loading">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" id="projectsPagination"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section class="dashboard-section" id="tasks">
+                <div class="section-header">
+                    <h1>Manage Tasks</h1>
+                    <button class="btn btn-primary" id="addTaskBtn">+ Assign New Task</button>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="filter-group">
+                            <select class="filter-select" id="taskStatusFilter">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="review">Review</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <select class="filter-select" id="taskPriorityFilter">
+                                <option value="">All Priority</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                            <input type="text" placeholder="Search tasks..." class="search-input" id="taskSearch">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Assigned To</th>
+                                        <th>Department</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tasksTableBody">
+                                    <tr>
+                                        <td colspan="7" class="loading">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -333,62 +527,13 @@
                                     <th>Category</th>
                                     <th>Priority</th>
                                     <th>Status</th>
-                                    <th>Views</th>
                                     <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="announcementsTableBodyAdmin">
                                 <tr>
-                                    <td>BPSC Recruitment 2024</td>
-                                    <td><span class="tag recruitment">Recruitment</span></td>
-                                    <td><span class="priority urgent">Urgent</span></td>
-                                    <td><span class="tag published">Published</span></td>
-                                    <td>1,234</td>
-                                    <td>15 Jan 2024</td>
-                                    <td>
-                                        <button class="action-btn">Edit</button>
-                                        <button class="action-btn danger">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Tasks Section -->
-            <section class="dashboard-section" id="tasks">
-                <div class="section-header">
-                    <h1>Manage Tasks</h1>
-                    <button class="btn btn-primary" id="addTaskBtn">+ Assign New Task</button>
-                </div>
-                <div class="dashboard-card">
-                    <div class="card-content">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Task ID</th>
-                                    <th>Title</th>
-                                    <th>Assigned To</th>
-                                    <th>Priority</th>
-                                    <th>Status</th>
-                                    <th>Due Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>TSK001</td>
-                                    <td>Prepare Quarterly Financial Report</td>
-                                    <td>John Sharma</td>
-                                    <td><span class="priority high">High</span></td>
-                                    <td><span class="status in-progress">In Progress</span></td>
-                                    <td>22 Jan 2024</td>
-                                    <td>
-                                        <button class="action-btn">Edit</button>
-                                        <button class="action-btn danger">Delete</button>
-                                    </td>
+                                    <td colspan="6" class="loading">Loading...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -412,22 +557,12 @@
                                     <th>Department</th>
                                     <th>Uploaded By</th>
                                     <th>Size</th>
-                                    <th>Downloads</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="documentsTableBody">
                                 <tr>
-                                    <td>Annual Report 2023.pdf</td>
-                                    <td>Report</td>
-                                    <td>Administration</td>
-                                    <td>Chief Secretary</td>
-                                    <td>2.5 MB</td>
-                                    <td>456</td>
-                                    <td>
-                                        <button class="action-btn">Download</button>
-                                        <button class="action-btn danger">Delete</button>
-                                    </td>
+                                    <td colspan="6" class="loading">Loading...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -446,22 +581,277 @@
                             <h3>Profile Settings</h3>
                         </div>
                         <div class="card-content">
-                            <form class="settings-form">
+                            <form class="settings-form" id="profileSettingsForm">
                                 <div class="form-group">
                                     <label>Full Name</label>
-                                    <input type="text" value="Admin Officer">
+                                    <input type="text" id="settingsFullName">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="email" value="admin@bpsc.gov.in">
+                                    <input type="email" id="settingsEmail" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <input type="text" id="settingsDepartment">
+                                </div>
+                                <div class="form-group">
+                                    <label>Designation</label>
+                                    <input type="text" id="settingsDesignation">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Change Password</h3>
+                        </div>
+                        <div class="card-content">
+                            <form class="password-form" id="changePasswordForm">
+                                <div class="form-group">
+                                    <label>Current Password</label>
+                                    <input type="password" id="currentPassword">
+                                </div>
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" id="newPassword">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" id="confirmPassword">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Change Password</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div class="modal" id="profileEditModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeProfileEditModal">&times;</button>
+            <h2>Edit Profile</h2>
+            <form id="profileEditForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editFullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" id="editDepartment">
+                </div>
+                <div class="form-group">
+                    <label>Designation</label>
+                    <input type="text" id="editDesignation">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="editPhone">
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text" id="editContactNumber">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="editAddress" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea id="editBio" rows="4" placeholder="Tell us about yourself..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelProfileEdit">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Image Modal -->
+    <div class="modal" id="profileImageModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeProfileImageModal">&times;</button>
+            <h2>Change Profile Photo</h2>
+            <form id="profileImageForm">
+                <div class="form-group">
+                    <label>Select Image</label>
+                    <input type="file" id="profileImageInput" accept="image/*">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelImageUpload">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeUserModal">&times;</button>
+            <h2 id="userModalTitle">Add New User</h2>
+            <form id="userForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="userFullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="userUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="userPassword">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="userRole" required>
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="employee">Employee</option>
+                        <option value="user">User</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select id="userDepartment">
+                        <option value="">Select Department</option>
+                        <option value="Administration">Administration</option>
+                        <option value="Finance">Finance</option>
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
+                        <option value="Operations">Operations</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelUserModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeProjectModal">&times;</button>
+            <h2 id="projectModalTitle">Add New Project</h2>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="projectName" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="projectDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select id="projectDepartment" required>
+                        <option value="">Select Department</option>
+                        <option value="Administration">Administration</option>
+                        <option value="Finance">Finance</option>
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
+                        <option value="Operations">Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" id="projectStartDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Deadline</label>
+                    <input type="date" id="projectDeadline" required>
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select id="projectPriority" required>
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelProjectModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+        <button class="modal-close" id="closeTaskModal">&times;</button>
+            <h2 id="taskModalTitle">Assign New Task</h2>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="taskTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="taskDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Assign To</label>
+                    <select id="taskAssignedTo" required>
+                        <option value="">Select Employee</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select id="taskDepartment" required>
+                        <option value="">Select Department</option>
+                        <option value="Administration">Administration</option>
+                        <option value="Finance">Finance</option>
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
+                        <option value="Operations">Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select id="taskPriority" required>
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="taskDueDate" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelTaskModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Assign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal" id="logoutModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeLogoutModal">&times;</button>
+            <h2>Confirm Logout</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="cancelLogout">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmLogout">Logout</button>
+            </div>
+        </div>
     </div>
 
     <script src="../js/app.js"></script>

@@ -11,6 +11,10 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Task description is required']
   },
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Project'
+  },
   assignedTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -98,5 +102,6 @@ taskSchema.pre('save', function(next) {
 // Index for efficient queries
 taskSchema.index({ assignedTo: 1, status: 1 });
 taskSchema.index({ dueDate: 1 });
+taskSchema.index({ project: 1 });
 
 module.exports = mongoose.model('Task', taskSchema);

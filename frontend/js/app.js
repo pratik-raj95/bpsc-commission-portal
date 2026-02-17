@@ -7,6 +7,12 @@
 const API_URL = 'http://localhost:3000/api';
 
 // ========================================
+// Global Variables
+// ========================================
+let currentUser = null;
+let token = null;
+
+// ========================================
 // Public Website JavaScript
 // ========================================
 
@@ -19,21 +25,27 @@ if (document.getElementById('loginBtn')) {
     const loginForm = document.getElementById('loginForm');
 
     // Open modal
-    loginBtn.addEventListener('click', () => {
-        loginModal.classList.add('active');
-    });
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+        });
+    }
 
     // Close modal
-    closeModal.addEventListener('click', () => {
-        loginModal.classList.remove('active');
-    });
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+        });
+    }
 
     // Close modal on outside click
-    loginModal.addEventListener('click', (e) => {
-        if (e.target === loginModal) {
-            loginModal.classList.remove('active');
-        }
-    });
+    if (loginModal) {
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+            }
+        });
+    }
 
     // Handle login form submission
     if (loginForm) {
@@ -55,7 +67,7 @@ if (document.getElementById('loginBtn')) {
                 const data = await response.json();
 
                 if (data.success) {
-                    // Store token
+                    // Store token and user
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
@@ -138,7 +150,19 @@ if (document.getElementById('loginBtn')) {
 const dashboardBody = document.querySelector('.dashboard-body');
 
 if (dashboardBody) {
+    // Get token and user from localStorage
+    token = localStorage.getItem('token');
+    currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+    // Check authentication
+    if (!token) {
+        // Redirect to home if not logged in
+        window.location.href = '/';
+    }
+
+    // ========================================
     // Sidebar Navigation
+    // ========================================
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     const navLinks = document.querySelectorAll('.sidebar-nav a');
@@ -173,6 +197,9 @@ if (dashboardBody) {
             if (window.innerWidth < 992) {
                 sidebar.classList.remove('active');
             }
+
+            // Load section data
+            loadSectionData(targetId);
         });
     });
 
@@ -186,23 +213,51 @@ if (dashboardBody) {
         });
     }
 
-    // User Profile Dropdown
+    // ========================================
+    // Profile Dropdown
+    // ========================================
     const userProfile = document.getElementById('userProfile');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    if (userProfile && profileDropdown) {
+        userProfile.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userProfile.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+    }
+
+    // ========================================
+    // Logout Functionality
+    // ========================================
+    const logoutBtn = document.getElementById('logoutBtn');
     const logoutModal = document.getElementById('logoutModal');
     const cancelLogout = document.getElementById('cancelLogout');
     const confirmLogout = document.getElementById('confirmLogout');
 
-    if (userProfile) {
-        userProfile.addEventListener('click', () => {
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             if (logoutModal) {
                 logoutModal.classList.add('active');
+            }
+            if (profileDropdown) {
+                profileDropdown.classList.remove('active');
             }
         });
     }
 
     if (cancelLogout) {
         cancelLogout.addEventListener('click', () => {
-            logoutModal.classList.remove('active');
+            if (logoutModal) {
+                logoutModal.classList.remove('active');
+            }
         });
     }
 
@@ -216,7 +271,6 @@ if (dashboardBody) {
         });
     }
 
-    // Close modal on outside click
     if (logoutModal) {
         logoutModal.addEventListener('click', (e) => {
             if (e.target === logoutModal) {
@@ -225,173 +279,684 @@ if (dashboardBody) {
         });
     }
 
-    // Check authentication
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-    if (!token) {
-        // Redirect to home if not logged in
-        window.location.href = '/';
-    } else {
-        // Update user info in UI
-        const userNameElements = document.querySelectorAll('.user-name');
+    // ========================================
+    // Update User Info in Header
+    // ========================================
+    function updateUserInfo() {
+        const userNameElements = document.querySelectorAll('#headerUserName, #dropdownUserName, #dashboardUserName');
         userNameElements.forEach(el => {
-            el.textContent = user.fullName || 'User';
+            if (el) el.textContent = currentUser.fullName || 'Admin';
         });
-    }
 
-    // Form submissions
-    const settingsForms = document.querySelectorAll('.settings-form, .profile-form, .password-form');
-    settingsForms.forEach(form => {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Settings saved successfully!');
+        const designationElements = document.querySelectorAll('#dropdownUserDesignation');
+        designationElements.forEach(el => {
+            if (el) el.textContent = currentUser.designation || 'Admin';
         });
-    });
 
-    // Task Update Form
-    const taskUpdateForm = document.querySelector('.task-update-form');
-    if (taskUpdateForm) {
-        taskUpdateForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const taskSelect = taskUpdateForm.querySelector('select');
-            const statusSelect = taskUpdateForm.querySelectorAll('select')[1];
-            const comments = taskUpdateForm.querySelector('textarea');
-
-            if (taskSelect && statusSelect) {
-                alert('Task status updated successfully!');
-                taskUpdateForm.reset();
+        // Update profile images
+        const profileImages = document.querySelectorAll('#headerProfileImage, #dropdownProfileImage, #profileImage');
+        profileImages.forEach(img => {
+            if (img && currentUser.profileImage) {
+                img.src = currentUser.profileImage;
             }
         });
     }
 
-    // Filter functionality
-    const filterSelects = document.querySelectorAll('.filter-select');
-    filterSelects.forEach(select => {
-        select.addEventListener('change', () => {
-            // In a real application, this would filter the data
-            console.log('Filter changed:', select.value);
-        });
-    });
+    // ========================================
+    // Section Data Loading
+    // ========================================
+    async function loadSectionData(sectionId) {
+        switch(sectionId) {
+            case 'dashboard':
+                await loadDashboardStats();
+                break;
+            case 'profile':
+                await loadProfile();
+                break;
+            case 'users':
+                await loadUsers();
+                break;
+            case 'projects':
+                await loadProjects();
+                break;
+            case 'tasks':
+                await loadTasks();
+                break;
+            case 'announcements':
+                await loadAnnouncementsAdmin();
+                break;
+        }
+    }
 
-    // Action buttons
-    const actionButtons = document.querySelectorAll('.action-btn');
-    actionButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const action = btn.textContent.trim().toLowerCase();
-            
-            if (action === 'edit' || action === 'update') {
-                // Open edit modal or handle edit
-                console.log('Edit action');
-            } else if (action === 'delete') {
-                if (confirm('Are you sure you want to delete this item?')) {
-                    console.log('Delete confirmed');
-                }
-            } else if (action === 'download') {
-                console.log('Download action');
-            }
-        });
-    });
-
-    // Load dashboard data
-    async function loadDashboardData() {
-        if (!token) return;
-
+    // ========================================
+    // Dashboard Stats
+    // ========================================
+    async function loadDashboardStats() {
         try {
-            // Fetch announcements
-            const announcementsResponse = await fetch(`${API_URL}/announcements`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+            // Load user stats
+            const usersResponse = await fetch(`${API_URL}/users/stats`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const usersData = await usersResponse.json();
+            
+            if (usersData.success) {
+                document.getElementById('totalEmployees').textContent = usersData.stats.totalUsers || 0;
+            }
+
+            // Load project stats
+            const projectsResponse = await fetch(`${API_URL}/projects/stats`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const projectsData = await projectsResponse.json();
+            
+            if (projectsData.success) {
+                document.getElementById('totalProjects').textContent = projectsData.stats.totalProjects || 0;
+            }
+
+            // Load task stats
+            const tasksResponse = await fetch(`${API_URL}/tasks/stats`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const tasksData = await tasksResponse.json();
+            
+            if (tasksData.success) {
+                const stats = tasksData.stats;
+                document.getElementById('totalTasks').textContent = stats.totalTasks || 0;
+                document.getElementById('completedTasks').textContent = stats.completedTasks || 0;
+                document.getElementById('pendingTasks').textContent = stats.pendingTasks || 0;
+                
+                // Calculate work progress
+                const progress = stats.totalTasks > 0 
+                    ? Math.round((stats.completedTasks / stats.totalTasks) * 100) 
+                    : 0;
+                document.getElementById('workProgress').textContent = progress + '%';
+                
+                // Update task overview
+                document.getElementById('taskPending').textContent = stats.pendingTasks || 0;
+                document.getElementById('taskInProgress').textContent = stats.inProgressTasks || 0;
+                document.getElementById('taskCompleted').textContent = stats.completedTasks || 0;
+                document.getElementById('taskOverdue').textContent = stats.overdueTasks || 0;
+            }
+
+            // Load recent announcements
+            const announcementsResponse = await fetch(`${API_URL}/announcements?limit=5`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             const announcementsData = await announcementsResponse.json();
             
             if (announcementsData.success) {
-                // Update announcements UI
-                console.log('Announcements loaded:', announcementsData.announcements.length);
+                updateAnnouncementsTable(announcementsData.announcements);
             }
 
-            // Fetch tasks (for employee dashboard)
-            if (user.role === 'employee') {
-                const tasksResponse = await fetch(`${API_URL}/tasks`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const tasksData = await tasksResponse.json();
-                
-                if (tasksData.success) {
-                    console.log('Tasks loaded:', tasksData.tasks.length);
-                }
-            }
+            // Initialize charts
+            initDashboardCharts();
 
         } catch (error) {
-            console.error('Error loading dashboard data:', error);
+            console.error('Error loading dashboard stats:', error);
         }
     }
 
-    // Load data on page load
-    loadDashboardData();
-}
+    function updateAnnouncementsTable(announcements) {
+        const tbody = document.getElementById('announcementsTableBody');
+        if (!tbody) return;
 
-// ========================================
-// Utility Functions
-// ========================================
+        if (announcements.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No announcements found</td></tr>';
+            return;
+        }
 
-// Format date
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return date.toLocaleDateString('en-IN', options);
-}
+        tbody.innerHTML = announcements.map(ann => `
+            <tr>
+                <td>${ann.title}</td>
+                <td><span class="category-tag ${ann.category}">${ann.category}</span></td>
+                <td><span class="tag ${ann.status}">${ann.status}</span></td>
+                <td>${formatDate(ann.publishDate)}</td>
+            </tr>
+        `).join('');
+    }
 
-// Format date with time
-function formatDateTime(dateString) {
-    const date = new Date(dateString);
-    const options = { 
-        day: 'numeric', 
-        month: 'short', 
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    };
-    return date.toLocaleDateString('en-IN', options);
-}
+    // ========================================
+    // Charts
+    // ========================================
+    function initDashboardCharts() {
+        // Task Status Chart
+        const taskCtx = document.getElementById('taskStatusChart');
+        if (taskCtx) {
+            new Chart(taskCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pending', 'In Progress', 'Completed', 'Overdue'],
+                    datasets: [{
+                        data: [
+                            parseInt(document.getElementById('taskPending').textContent) || 0,
+                            parseInt(document.getElementById('taskInProgress').textContent) || 0,
+                            parseInt(document.getElementById('taskCompleted').textContent) || 0,
+                            parseInt(document.getElementById('taskOverdue').textContent) || 0
+                        ],
+                        backgroundColor: ['#ffc107', '#17a2b8', '#28a745', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
 
-// Show notification
-function showNotification(message, type = 'info') {
-    // In a real application, this would show a toast notification
-    alert(message);
-}
+        // Project Status Chart
+        const projectCtx = document.getElementById('projectStatusChart');
+        if (projectCtx) {
+            new Chart(projectCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Planning', 'Active', 'On Hold', 'Completed'],
+                    datasets: [{
+                        label: 'Projects',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#6c757d', '#17a2b8', '#ffc107', '#28a745']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
 
-// Check API connection
-async function checkAPIConnection() {
-    try {
-        const response = await fetch(`${API_URL}/auth/me`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        // Department Chart
+        const deptCtx = document.getElementById('departmentChart');
+        if (deptCtx) {
+            new Chart(deptCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Administration', 'Finance', 'HR', 'IT', 'Operations'],
+                    datasets: [{
+                        data: [15, 12, 10, 8, 5],
+                        backgroundColor: ['#0f3c75', '#28a745', '#ffc107', '#17a2b8', '#6f42c1']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+    }
+
+    // ========================================
+    // Profile Page
+    // ========================================
+    async function loadProfile() {
+        try {
+            const response = await fetch(`${API_URL}/auth/me`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                const user = data.user;
+
+                // Update profile section
+                document.getElementById('profileFullName').textContent = user.fullName || '-';
+                document.getElementById('profileDesignation').textContent = user.designation || '-';
+                document.getElementById('profileDepartment').textContent = user.department || '-';
+                document.getElementById('profileRole').textContent = user.role || '-';
+
+                // Update profile image
+                if (user.profileImage) {
+                    document.getElementById('profileImage').src = user.profileImage;
+                }
+
+                // Update info grid
+                document.getElementById('infoFullName').textContent = user.fullName || '-';
+                document.getElementById('infoEmail').textContent = user.email || '-';
+                document.getElementById('infoPhone').textContent = user.phone || '-';
+                document.getElementById('infoContactNumber').textContent = user.contactNumber || '-';
+                document.getElementById('infoAddress').textContent = user.address || '-';
+                document.getElementById('infoEmployeeId').textContent = user.employeeId || '-';
+                document.getElementById('infoRole').textContent = user.role || '-';
+                document.getElementById('infoDepartment').textContent = user.department || '-';
+                document.getElementById('infoDesignation').textContent = user.designation || '-';
+                document.getElementById('infoCreatedAt').textContent = formatDate(user.createdAt);
+                document.getElementById('infoLastLogin').textContent = user.lastLogin ? formatDate(user.lastLogin) : '-';
+
+                // Update bio
+                document.getElementById('profileBio').textContent = user.bio || 'No bio added yet.';
+
+                // Update settings form
+                document.getElementById('settingsFullName').value = user.fullName || '';
+                document.getElementById('settingsEmail').value = user.email || '';
+                document.getElementById('settingsDepartment').value = user.department || '';
+                document.getElementById('settingsDesignation').value = user.designation || '';
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error);
+        }
+    }
+
+    // Profile Edit Modal
+    const profileEditModal = document.getElementById('profileEditModal');
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const editPersonalInfoBtn = document.getElementById('editPersonalInfoBtn');
+    const editBioBtn = document.getElementById('editBioBtn');
+    const closeProfileEditModal = document.getElementById('closeProfileEditModal');
+    const cancelProfileEdit = document.getElementById('cancelProfileEdit');
+    const profileEditForm = document.getElementById('profileEditForm');
+
+    function openProfileEditModal() {
+        if (!profileEditModal) return;
+
+        // Populate form with current data
+        document.getElementById('editFullName').value = currentUser.fullName || '';
+        document.getElementById('editDepartment').value = currentUser.department || '';
+        document.getElementById('editDesignation').value = currentUser.designation || '';
+        document.getElementById('editPhone').value = currentUser.phone || '';
+        document.getElementById('editContactNumber').value = currentUser.contactNumber || '';
+        document.getElementById('editAddress').value = currentUser.address || '';
+        document.getElementById('editBio').value = currentUser.bio || '';
+
+        profileEditModal.classList.add('active');
+    }
+
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openProfileEditModal();
+        });
+    }
+
+    if (editPersonalInfoBtn) {
+        editPersonalInfoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openProfileEditModal();
+        });
+    }
+
+    if (editBioBtn) {
+        editBioBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openProfileEditModal();
+        });
+    }
+
+    if (closeProfileEditModal) {
+        closeProfileEditModal.addEventListener('click', () => {
+            profileEditModal.classList.remove('active');
+        });
+    }
+
+    if (cancelProfileEdit) {
+        cancelProfileEdit.addEventListener('click', () => {
+            profileEditModal.classList.remove('active');
+        });
+    }
+
+    if (profileEditForm) {
+        profileEditForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                fullName: document.getElementById('editFullName').value,
+                department: document.getElementById('editDepartment').value,
+                designation: document.getElementById('editDesignation').value,
+                phone: document.getElementById('editPhone').value,
+                contactNumber: document.getElementById('editContactNumber').value,
+                address: document.getElementById('editAddress').value,
+                bio: document.getElementById('editBio').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Profile updated successfully!');
+                    profileEditModal.classList.remove('active');
+                    // Update current user
+                    currentUser = { ...currentUser, ...formData };
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                    updateUserInfo();
+                    loadProfile();
+                } else {
+                    alert(data.message || 'Failed to update profile');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('An error occurred');
             }
         });
-        return response.ok;
-    } catch (error) {
-        console.error('API connection failed:', error);
-        return false;
     }
-}
 
-// ========================================
-// Initialize Application
-// ========================================
+    // Profile Image Modal
+    const profileImageModal = document.getElementById('profileImageModal');
+    const changePhotoBtn = document.getElementById('changePhotoBtn');
+    const closeProfileImageModal = document.getElementById('closeProfileImageModal');
+    const cancelImageUpload = document.getElementById('cancelImageUpload');
+    const profileImageForm = document.getElementById('profileImageForm');
+    const profileImageInput = document.getElementById('profileImageInput');
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('BPSC Portal loaded');
-    
-    // Check API connection
-    checkAPIConnection().then(connected => {
-        if (!connected) {
-            console.warn('API server not connected. Some features may not work.');
+    if (changePhotoBtn && profileImageModal) {
+        changePhotoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            profileImageModal.classList.add('active');
+        });
+    }
+
+    if (closeProfileImageModal) {
+        closeProfileImageModal.addEventListener('click', () => {
+            profileImageModal.classList.remove('active');
+        });
+    }
+
+    if (cancelImageUpload) {
+        cancelImageUpload.addEventListener('click', () => {
+            profileImageModal.classList.remove('active');
+        });
+    }
+
+    if (profileImageForm) {
+        profileImageForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!profileImageInput.files[0]) {
+                alert('Please select an image');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('profileImage', profileImageInput.files[0]);
+
+            try {
+                const response = await fetch(`${API_URL}/auth/profile-image`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Profile image updated successfully!');
+                    profileImageModal.classList.remove('active');
+                    currentUser.profileImage = data.user.profileImage;
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                    updateUserInfo();
+                    loadProfile();
+                } else {
+                    alert(data.message || 'Failed to upload image');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('An error occurred');
+            }
+        });
+    }
+
+    // ========================================
+    // User Management
+    // ========================================
+    async function loadUsers() {
+        try {
+            const response = await fetch(`${API_URL}/users`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                updateUsersTable(data.users);
+            }
+        } catch (error) {
+            console.error('Error loading users:', error);
         }
-    });
-});
+    }
+
+    function updateUsersTable(users) {
+        const tbody = document.getElementById('usersTableBody');
+        if (!tbody) return;
+
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No users found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = users.map(user => `
+            <tr>
+                <td>${user.employeeId || '-'}</td>
+                <td>${user.fullName}</td>
+                <td>${user.email}</td>
+                <td><span class="tag ${user.role}">${user.role}</span></td>
+                <td>${user.department || '-'}</td>
+                <td><span class="tag ${user.isActive ? 'active' : 'inactive'}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
+                <td>
+                    <button class="action-btn" onclick="editUser('${user._id}')">Edit</button>
+                    <button class="action-btn danger" onclick="deleteUser('${user._id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Add User Modal
+    const userModal = document.getElementById('userModal');
+    const addUserBtn = document.getElementById('addUserBtn');
+    const closeUserModal = document.getElementById('closeUserModal');
+    const cancelUserModal = document.getElementById('cancelUserModal');
+    const userForm = document.getElementById('userForm');
+
+    if (addUserBtn && userModal) {
+        addUserBtn.addEventListener('click', () => {
+            document.getElementById('userModalTitle').textContent = 'Add New User';
+            userForm.reset();
+            userModal.classList.add('active');
+        });
+    }
+
+    if (closeUserModal) {
+        closeUserModal.addEventListener('click', () => {
+            userModal.classList.remove('active');
+        });
+    }
+
+    if (cancelUserModal) {
+        cancelUserModal.addEventListener('click', () => {
+            userModal.classList.remove('active');
+        });
+    }
+
+    if (userForm) {
+        userForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                fullName: document.getElementById('userFullName').value,
+                email: document.getElementById('userEmail').value,
+                username: document.getElementById('userUsername').value,
+                password: document.getElementById('userPassword').value,
+                role: document.getElementById('userRole').value,
+                department: document.getElementById('userDepartment').value,
+                designation: document.getElementById('userDesignation').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('User created successfully!');
+                    userModal.classList.remove('active');
+                    loadUsers();
+                } else {
+                    alert(data.message || 'Failed to create user');
+                }
+            } catch (error) {
+                console.error('Error creating user:', error);
+                alert('An error occurred');
+            }
+        });
+    }
+
+    // ========================================
+    // Project Management
+    // ========================================
+    async function loadProjects() {
+        try {
+            const response = await fetch(`${API_URL}/projects`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                updateProjectsTable(data.projects);
+            }
+        } catch (error) {
+            console.error('Error loading projects:', error);
+        }
+    }
+
+    function updateProjectsTable(projects) {
+        const tbody = document.getElementById('projectsTableBody');
+        if (!tbody) return;
+
+        if (projects.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No projects found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = projects.map(project => `
+            <tr>
+                <td>${project.projectName}</td>
+                <td>${project.department}</td>
+                <td>${formatDate(project.startDate)}</td>
+                <td>${formatDate(project.deadline)}</td>
+                <td>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${project.progress || 0}%"></div>
+                    </div>
+                    <span>${project.progress || 0}%</span>
+                </td>
+                <td><span class="tag ${project.status}">${project.status}</span></td>
+                <td>
+                    <button class="action-btn" onclick="editProject('${project._id}')">Edit</button>
+                    <button class="action-btn danger" onclick="deleteProject('${project._id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Add Project Modal
+    const projectModal = document.getElementById('projectModal');
+    const addProjectBtn = document.getElementById('addProjectBtn');
+    const closeProjectModal = document.getElementById('closeProjectModal');
+    const cancelProjectModal = document.getElementById('cancelProjectModal');
+    const projectForm = document.getElementById('projectForm');
+
+    if (addProjectBtn && projectModal) {
+        addProjectBtn.addEventListener('click', () => {
+            document.getElementById('projectModalTitle').textContent = 'Add New Project';
+            projectForm.reset();
+            projectModal.classList.add('active');
+        });
+    }
+
+    if (closeProjectModal) {
+        closeProjectModal.addEventListener('click', () => {
+            projectModal.classList.remove('active');
+        });
+    }
+
+    if (cancelProjectModal) {
+        cancelProjectModal.addEventListener('click', () => {
+            projectModal.classList.remove('active');
+        });
+    }
+
+    if (projectForm) {
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                projectName: document.getElementById('projectName').value,
+                description: document.getElementById('projectDescription').value,
+                department: document.getElementById('projectDepartment').value,
+                startDate: document.getElementById('projectStartDate').value,
+                deadline: document.getElementById('projectDeadline').value,
+                priority: document.getElementById('projectPriority').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/projects`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Project created successfully!');
+                    projectModal.classList.remove('active');
+                    loadProjects();
+                } else {
+                    alert(data.message || 'Failed to create project');
+                }
+            } catch (error) {
+                console.error('Error creating project:', error);
+                alert('An error occurred');
+            }
+        });
+    }
+
+    // ========================================
+    // Task Management
+    // ========================================
+    async function loadTasks() {
+        try {
+            const response = await fetch(`${API_URL}/tasks`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                updateTasksTable(data.tasks);
+            }
+        } catch (error) {
+            console.error('Error loading tasks:', error);
+        }
+    }
+
+    function updateTasksTable(tasks) {
+        const tbody = document.getElementById('tasksTableBody');
+        if (!tbody) return;
+
+        if (tasks.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No tasks found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = tasks.map(task => `
+            <tr>
+                <td>${task.title}</td>
+                <td>${task.assignedTo?.fullName || '-'}</td>

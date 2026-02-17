@@ -50,9 +50,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  contactNumber: {
+    type: String,
+    trim: true
+  },
   address: {
     type: String,
     trim: true
+  },
+  bio: {
+    type: String,
+    trim: true,
+    maxlength: 500
   },
   profileImage: {
     type: String

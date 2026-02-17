@@ -2,12 +2,19 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const connectDB = require('./config/db');
 
 // Connect to database
 connectDB();
 
 const app = express();
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Middleware
 app.use(cors());
@@ -34,6 +41,7 @@ app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/announcements', require('./routes/announcementRoutes'));
 app.use('/api/documents', require('./routes/documentRoutes'));
 

@@ -6,7 +6,7 @@ const { generateToken } = require('../middleware/authMiddleware');
 // @access  Public
 exports.register = async (req, res) => {
   try {
-    const { username, email, password, fullName, department, designation, phone } = req.body;
+    const { username, email, password, fullName, department, designation, phone, role } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ $or: [{ email }, { username }] });
@@ -15,6 +15,12 @@ exports.register = async (req, res) => {
         success: false,
         message: 'User already exists with this email or username'
       });
+    }
+
+    // Determine role - only allow admin role for superadmin
+    let userRole = 'user';
+    if (req.body.role && ['superadmin', 'admin', 'employee'].includes(req.body.role)) {
+      userRole = req.body.role;
     }
 
     // Create user
@@ -26,7 +32,7 @@ exports.register = async (req, res) => {
       department,
       designation,
       phone,
-      role: 'user'
+      role: userRole
     });
 
     const token = generateToken(user._id);
@@ -139,9 +145,12 @@ exports.getMe = async (req, res) => {
         department: user.department,
         designation: user.designation,
         phone: user.phone,
+        contactNumber: user.contactNumber,
         address: user.address,
+        bio: user.bio,
         profileImage: user.profileImage,
         employeeId: user.employeeId,
+        lastLogin: user.lastLogin,
         createdAt: user.createdAt
       }
     });
@@ -181,6 +190,107 @@ exports.updatePassword = async (req, res) => {
       success: true,
       message: 'Password updated successfully',
       token
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+exports.updateProfile = async (req, res) => {
+  try {
+    const { fullName, department, designation, phone, contactNumber, address, bio } = req.body;
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Update fields
+    if (fullName) user.fullName = fullName;
+    if (department) user.department = department;
+    if (designation) user.designation = designation;
+    if (phone !== undefined) user.phone = phone;
+    if (contactNumber !== undefined) user.contactNumber = contactNumber;
+    if (address !== undefined) user.address = address;
+    if (bio !== undefined) user.bio = bio;
+
+    await user.save();
+
+    res.json({
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        role: user.role,
+        department: user.department,
+        designation: user.designation,
+        phone: user.phone,
+        contactNumber: user.contactNumber,
+        address: user.address,
+        bio: user.bio,
+        profileImage: user.profileImage,
+        employeeId: user.employeeId,
+        lastLogin: user.lastLogin,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// @desc    Upload profile image
+// @route   PUT /api/auth/profile-image
+// @access  Private
+exports.uploadProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please upload an image file'
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Update profile image path
+    user.profileImage = `/uploads/${req.file.filename}`;
+    await user.save();
+
+    res.json({
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        role: user.role,
+        department: user.department,
+        designation: user.designation,
+        profileImage: user.profileImage
+      }
     });
   } catch (error) {
     res.status(500).json({
