@@ -759,6 +759,7 @@ if (dashboardBody) {
         addUserBtn.addEventListener('click', () => {
             document.getElementById('userModalTitle').textContent = 'Add New User';
             userForm.reset();
+            delete userForm.dataset.userId;
             userModal.classList.add('active');
         });
     }
@@ -779,6 +780,7 @@ if (dashboardBody) {
         userForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            const userId = userForm.dataset.userId;
             const formData = {
                 fullName: document.getElementById('userFullName').value,
                 email: document.getElementById('userEmail').value,
@@ -790,8 +792,11 @@ if (dashboardBody) {
             };
 
             try {
-                const response = await fetch(`${API_URL}/users`, {
-                    method: 'POST',
+                const url = userId ? `${API_URL}/users/${userId}` : `${API_URL}/users`;
+                const method = userId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -802,18 +807,75 @@ if (dashboardBody) {
                 const data = await response.json();
 
                 if (data.success) {
-                    alert('User created successfully!');
+                    alert(userId ? 'User updated successfully!' : 'User created successfully!');
                     userModal.classList.remove('active');
                     loadUsers();
                 } else {
-                    alert(data.message || 'Failed to create user');
+                    alert(data.message || 'Failed to save user');
                 }
             } catch (error) {
-                console.error('Error creating user:', error);
+                console.error('Error saving user:', error);
                 alert('An error occurred');
             }
         });
     }
+
+    // Edit User function
+    window.editUser = async function(userId) {
+        try {
+            const response = await fetch(`${API_URL}/users/${userId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                const user = data.user;
+                document.getElementById('userModalTitle').textContent = 'Edit User';
+                document.getElementById('userFullName').value = user.fullName || '';
+                document.getElementById('userEmail').value = user.email || '';
+                document.getElementById('userUsername').value = user.username || '';
+                document.getElementById('userPassword').value = '';
+                document.getElementById('userRole').value = user.role || '';
+                document.getElementById('userDepartment').value = user.department || '';
+                document.getElementById('userDesignation').value = user.designation || '';
+                
+                userModal.classList.add('active');
+                
+                // Store userId for update
+                userForm.dataset.userId = userId;
+            } else {
+                alert(data.message || 'Failed to load user');
+            }
+        } catch (error) {
+            console.error('Error loading user:', error);
+            alert('An error occurred');
+        }
+    };
+
+    // Delete User function
+    window.deleteUser = async function(userId) {
+        if (!confirm('Are you sure you want to delete this user?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/users/${userId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('User deleted successfully!');
+                loadUsers();
+            } else {
+                alert(data.message || 'Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            alert('An error occurred');
+        }
+    };
 
     // ========================================
     // Project Management
@@ -874,6 +936,7 @@ if (dashboardBody) {
         addProjectBtn.addEventListener('click', () => {
             document.getElementById('projectModalTitle').textContent = 'Add New Project';
             projectForm.reset();
+            delete projectForm.dataset.projectId;
             projectModal.classList.add('active');
         });
     }
@@ -894,6 +957,7 @@ if (dashboardBody) {
         projectForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            const projectId = projectForm.dataset.projectId;
             const formData = {
                 projectName: document.getElementById('projectName').value,
                 description: document.getElementById('projectDescription').value,
@@ -904,8 +968,11 @@ if (dashboardBody) {
             };
 
             try {
-                const response = await fetch(`${API_URL}/projects`, {
-                    method: 'POST',
+                const url = projectId ? `${API_URL}/projects/${projectId}` : `${API_URL}/projects`;
+                const method = projectId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -916,18 +983,74 @@ if (dashboardBody) {
                 const data = await response.json();
 
                 if (data.success) {
-                    alert('Project created successfully!');
+                    alert(projectId ? 'Project updated successfully!' : 'Project created successfully!');
                     projectModal.classList.remove('active');
                     loadProjects();
                 } else {
-                    alert(data.message || 'Failed to create project');
+                    alert(data.message || 'Failed to save project');
                 }
             } catch (error) {
-                console.error('Error creating project:', error);
+                console.error('Error saving project:', error);
                 alert('An error occurred');
             }
         });
     }
+
+    // Edit Project function
+    window.editProject = async function(projectId) {
+        try {
+            const response = await fetch(`${API_URL}/projects/${projectId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                const project = data.project;
+                document.getElementById('projectModalTitle').textContent = 'Edit Project';
+                document.getElementById('projectName').value = project.projectName || '';
+                document.getElementById('projectDescription').value = project.description || '';
+                document.getElementById('projectDepartment').value = project.department || '';
+                document.getElementById('projectStartDate').value = project.startDate ? project.startDate.split('T')[0] : '';
+                document.getElementById('projectDeadline').value = project.deadline ? project.deadline.split('T')[0] : '';
+                document.getElementById('projectPriority').value = project.priority || '';
+                
+                projectModal.classList.add('active');
+                
+                // Store projectId for update
+                projectForm.dataset.projectId = projectId;
+            } else {
+                alert(data.message || 'Failed to load project');
+            }
+        } catch (error) {
+            console.error('Error loading project:', error);
+            alert('An error occurred');
+        }
+    };
+
+    // Delete Project function
+    window.deleteProject = async function(projectId) {
+        if (!confirm('Are you sure you want to delete this project?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/projects/${projectId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Project deleted successfully!');
+                loadProjects();
+            } else {
+                alert(data.message || 'Failed to delete project');
+            }
+        } catch (error) {
+            console.error('Error deleting project:', error);
+            alert('An error occurred');
+        }
+    };
 
     // ========================================
     // Task Management
@@ -960,3 +1083,326 @@ if (dashboardBody) {
             <tr>
                 <td>${task.title}</td>
                 <td>${task.assignedTo?.fullName || '-'}</td>
+                <td>${task.project?.projectName || '-'}</td>
+                <td>${formatDate(task.dueDate)}</td>
+                <td><span class="tag ${task.priority}">${task.priority}</span></td>
+                <td><span class="tag ${task.status}">${task.status}</span></td>
+                <td>
+                    <button class="action-btn" onclick="editTask('${task._id}')">Edit</button>
+                    <button class="action-btn danger" onclick="deleteTask('${task._id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Add Task Modal
+    const taskModal = document.getElementById('taskModal');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const closeTaskModal = document.getElementById('closeTaskModal');
+    const cancelTaskModal = document.getElementById('cancelTaskModal');
+    const taskForm = document.getElementById('taskForm');
+
+    if (addTaskBtn && taskModal) {
+        addTaskBtn.addEventListener('click', () => {
+            document.getElementById('taskModalTitle').textContent = 'Add New Task';
+            taskForm.reset();
+            delete taskForm.dataset.taskId;
+            taskModal.classList.add('active');
+        });
+    }
+
+    if (closeTaskModal) {
+        closeTaskModal.addEventListener('click', () => {
+            taskModal.classList.remove('active');
+        });
+    }
+
+    if (cancelTaskModal) {
+        cancelTaskModal.addEventListener('click', () => {
+            taskModal.classList.remove('active');
+        });
+    }
+
+    if (taskForm) {
+        taskForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const taskId = taskForm.dataset.taskId;
+            const formData = {
+                title: document.getElementById('taskTitle').value,
+                description: document.getElementById('taskDescription').value,
+                assignedTo: document.getElementById('taskAssignedTo').value,
+                project: document.getElementById('taskProject').value,
+                dueDate: document.getElementById('taskDueDate').value,
+                priority: document.getElementById('taskPriority').value,
+                status: document.getElementById('taskStatus').value
+            };
+
+            try {
+                const url = taskId ? `${API_URL}/tasks/${taskId}` : `${API_URL}/tasks`;
+                const method = taskId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(taskId ? 'Task updated successfully!' : 'Task created successfully!');
+                    taskModal.classList.remove('active');
+                    loadTasks();
+                } else {
+                    alert(data.message || 'Failed to save task');
+                }
+            } catch (error) {
+                console.error('Error saving task:', error);
+                alert('An error occurred');
+            }
+        });
+    }
+
+    // Edit Task function
+    window.editTask = async function(taskId) {
+        try {
+            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                const task = data.task;
+                document.getElementById('taskModalTitle').textContent = 'Edit Task';
+                document.getElementById('taskTitle').value = task.title || '';
+                document.getElementById('taskDescription').value = task.description || '';
+                document.getElementById('taskAssignedTo').value = task.assignedTo?._id || '';
+                document.getElementById('taskProject').value = task.project?._id || '';
+                document.getElementById('taskDueDate').value = task.dueDate ? task.dueDate.split('T')[0] : '';
+                document.getElementById('taskPriority').value = task.priority || '';
+                document.getElementById('taskStatus').value = task.status || '';
+                
+                taskModal.classList.add('active');
+                
+                // Store taskId for update
+                taskForm.dataset.taskId = taskId;
+            } else {
+                alert(data.message || 'Failed to load task');
+            }
+        } catch (error) {
+            console.error('Error loading task:', error);
+            alert('An error occurred');
+        }
+    };
+
+    // Delete Task function
+    window.deleteTask = async function(taskId) {
+        if (!confirm('Are you sure you want to delete this task?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Task deleted successfully!');
+                loadTasks();
+            } else {
+                alert(data.message || 'Failed to delete task');
+            }
+        } catch (error) {
+            console.error('Error deleting task:', error);
+            alert('An error occurred');
+        }
+    };
+
+    // ========================================
+    // Announcement Management (Admin)
+    // ========================================
+    async function loadAnnouncementsAdmin() {
+        try {
+            const response = await fetch(`${API_URL}/announcements`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                updateAnnouncementsAdminTable(data.announcements);
+            }
+        } catch (error) {
+            console.error('Error loading announcements:', error);
+        }
+    }
+
+    function updateAnnouncementsAdminTable(announcements) {
+        const tbody = document.getElementById('announcementsAdminTableBody');
+        if (!tbody) return;
+
+        if (announcements.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No announcements found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = announcements.map(ann => `
+            <tr>
+                <td>${ann.title}</td>
+                <td><span class="category-tag ${ann.category}">${ann.category}</span></td>
+                <td>${formatDate(ann.publishDate)}</td>
+                <td><span class="tag ${ann.status}">${ann.status}</span></td>
+                <td>
+                    <button class="action-btn" onclick="editAnnouncement('${ann._id}')">Edit</button>
+                    <button class="action-btn danger" onclick="deleteAnnouncement('${ann._id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Add Announcement Modal
+    const announcementModal = document.getElementById('announcementModal');
+    const addAnnouncementBtn = document.getElementById('addAnnouncementBtn');
+    const closeAnnouncementModal = document.getElementById('closeAnnouncementModal');
+    const cancelAnnouncementModal = document.getElementById('cancelAnnouncementModal');
+    const announcementForm = document.getElementById('announcementForm');
+
+    if (addAnnouncementBtn && announcementModal) {
+        addAnnouncementBtn.addEventListener('click', () => {
+            document.getElementById('announcementModalTitle').textContent = 'Add New Announcement';
+            announcementForm.reset();
+            delete announcementForm.dataset.announcementId;
+            announcementModal.classList.add('active');
+        });
+    }
+
+    if (closeAnnouncementModal) {
+        closeAnnouncementModal.addEventListener('click', () => {
+            announcementModal.classList.remove('active');
+        });
+    }
+
+    if (cancelAnnouncementModal) {
+        cancelAnnouncementModal.addEventListener('click', () => {
+            announcementModal.classList.remove('active');
+        });
+    }
+
+    if (announcementForm) {
+        announcementForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const announcementId = announcementForm.dataset.announcementId;
+            const formData = {
+                title: document.getElementById('announcementTitle').value,
+                content: document.getElementById('announcementContent').value,
+                category: document.getElementById('announcementCategory').value,
+                status: document.getElementById('announcementStatus').value
+            };
+
+            try {
+                const url = announcementId ? `${API_URL}/announcements/${announcementId}` : `${API_URL}/announcements`;
+                const method = announcementId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(announcementId ? 'Announcement updated successfully!' : 'Announcement created successfully!');
+                    announcementModal.classList.remove('active');
+                    loadAnnouncementsAdmin();
+                } else {
+                    alert(data.message || 'Failed to save announcement');
+                }
+            } catch (error) {
+                console.error('Error saving announcement:', error);
+                alert('An error occurred');
+            }
+        });
+    }
+
+    // Edit Announcement function
+    window.editAnnouncement = async function(announcementId) {
+        try {
+            const response = await fetch(`${API_URL}/announcements/${announcementId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                const announcement = data.announcement;
+                document.getElementById('announcementModalTitle').textContent = 'Edit Announcement';
+                document.getElementById('announcementTitle').value = announcement.title || '';
+                document.getElementById('announcementContent').value = announcement.content || '';
+                document.getElementById('announcementCategory').value = announcement.category || '';
+                document.getElementById('announcementStatus').value = announcement.status || '';
+                
+                announcementModal.classList.add('active');
+                
+                // Store announcementId for update
+                announcementForm.dataset.announcementId = announcementId;
+            } else {
+                alert(data.message || 'Failed to load announcement');
+            }
+        } catch (error) {
+            console.error('Error loading announcement:', error);
+            alert('An error occurred');
+        }
+    };
+
+    // Delete Announcement function
+    window.deleteAnnouncement = async function(announcementId) {
+        if (!confirm('Are you sure you want to delete this announcement?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/announcements/${announcementId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Announcement deleted successfully!');
+                loadAnnouncementsAdmin();
+            } else {
+                alert(data.message || 'Failed to delete announcement');
+            }
+        } catch (error) {
+            console.error('Error deleting announcement:', error);
+            alert('An error occurred');
+        }
+    };
+
+    // Update user info on page load
+    updateUserInfo();
+}
+
+// ========================================
+// Utility Functions
+// ========================================
+
+// Format date function
+function formatDate(dateString) {
+    if (!dateString) return '-';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '-';
+    
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
