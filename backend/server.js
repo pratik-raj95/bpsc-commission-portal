@@ -21,6 +21,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// =====================
+// STATIC FILES (Order matters in Express!)
+// =====================
+
 // Static files for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -30,22 +34,14 @@ app.use('/css', express.static(path.join(__dirname, '../frontend/css')));
 // Static files for frontend - JavaScript
 app.use('/js', express.static(path.join(__dirname, '../frontend/js')));
 
-
 // Serve assets (images, logos etc)
 app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
 
-// Static files for frontend - Public (HTML files)
-app.use(express.static(path.join(__dirname, '../frontend/public')));
+// =====================
+// FRONTEND ROUTES - These MUST be before express.static!
+// In Express, route handlers (app.get) are matched BEFORE middleware
+// =====================
 
-// Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/tasks', require('./routes/taskRoutes'));
-app.use('/api/projects', require('./routes/projectRoutes'));
-app.use('/api/announcements', require('./routes/announcementRoutes'));
-app.use('/api/documents', require('./routes/documentRoutes'));
-
-// Serve frontend pages
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
@@ -58,6 +54,21 @@ app.get('/employee', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/employee.html'));
 });
 
+// Static files for frontend - Public (fallback for any other static files)
+// This comes AFTER route handlers so they take precedence
+app.use(express.static(path.join(__dirname, '../frontend/public')));
+
+// =====================
+// API ROUTES
+// =====================
+
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/projects', require('./routes/projectRoutes'));
+app.use('/api/announcements', require('./routes/announcementRoutes'));
+app.use('/api/documents', require('./routes/documentRoutes'));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -67,12 +78,17 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
+// 404 handler - MUST be last
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found'
-  });
+  // For API routes, return JSON
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(404).json({
+      success: false,
+      message: 'API route not found'
+    });
+  }
+  // For frontend routes, serve index.html (SPA behavior)
+  res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
 
 const PORT = process.env.PORT || 3000;

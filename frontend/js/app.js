@@ -64,22 +64,35 @@ if (document.getElementById('loginBtn')) {
                     body: JSON.stringify({ email, password })
                 });
 
+                // Check response status before parsing JSON
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(errorData.message || 'Login failed');
+                    return;
+                }
+
                 const data = await response.json();
 
                 if (data.success) {
-                    // Store token and user
+                    // Store token and user in localStorage
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
+                    // Close login modal
                     loginModal.classList.remove('active');
                     
-                    // Redirect based on role
-                    if (data.user.role === 'superadmin' || data.user.role === 'admin') {
+                    // Role-based redirect
+                    const userRole = data.user.role;
+                    
+                    if (userRole === 'admin' || userRole === 'superadmin') {
                         window.location.href = '/admin';
-                    } else if (data.user.role === 'employee') {
+                    } else if (userRole === 'employee') {
                         window.location.href = '/employee';
+                    } else if (userRole === 'user') {
+                        window.location.href = '/';
                     } else {
-                        alert('Login successful!');
+                        // Fallback for unknown roles
+                        window.location.href = '/';
                     }
                 } else {
                     alert(data.message || 'Login failed');
