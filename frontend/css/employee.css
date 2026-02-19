@@ -1,0 +1,361 @@
+/* ========================================
+   BPSC Government Commission Portal - Employee Dashboard Styles
+   ======================================== */
+
+/* Note: Most styles are shared with admin.css (common dashboard styles)
+   This file contains employee-specific overrides and additional styles */
+
+/* ========================================
+   Employee Dashboard Header
+   ======================================== */
+
+/* Uses .dashboard-header from admin.css */
+
+/* ========================================
+   Employee Info Card
+   ======================================== */
+
+.employee-info-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+}
+
+.employee-details {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.employee-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.employee-text h2 {
+    margin-bottom: var(--spacing-xs);
+}
+
+.employee-text p {
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-muted);
+}
+
+.employee-stats {
+    display: flex;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.emp-stat {
+    text-align: center;
+}
+
+.emp-stat-number {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+    font-family: var(--font-heading);
+}
+
+.emp-stat-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* ========================================
+   Quick Actions
+   ======================================== */
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.quick-action-btn {
+    padding: var(--spacing-md);
+    background-color: var(--light-blue);
+    border: 1px solid var(--primary-blue);
+    border-radius: var(--radius-sm);
+    color: var(--primary-blue);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.quick-action-btn:hover {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+/* ========================================
+   Announcement Mini
+   ======================================== */
+
+.announcement-mini {
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.announcement-mini:last-child {
+    border-bottom: none;
+}
+
+.announcement-mini h4 {
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.announcement-mini p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.announcement-mini .announcement-date {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* ========================================
+   Announcements Grid
+   ======================================== */
+
+.announcements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.announcement-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
+}
+
+.announcement-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.announcement-card h3 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.announcement-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ========================================
+   Team Structure
+   ======================================== */
+
+.team-structure {
+    padding: var(--spacing-lg) 0;
+}
+
+.team-level {
+    margin-bottom: var(--spacing-xl);
+}
+
+.team-level h3 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-body);
+    font-weight: 500;
+}
+
+.team-members {
+    display: flex;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.team-member {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    background-color: var(--light-gray);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.team-member img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.member-info h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+    font-family: var(--font-body);
+}
+
+.member-info p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
+/* ========================================
+   Employee Profile
+   ======================================== */
+
+.employee-profile-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-xl);
+}
+
+.employee-profile-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.employee-profile-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.employee-profile-info h2 {
+    margin-bottom: var(--spacing-xs);
+}
+
+.employee-profile-info p {
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* ========================================
+   Task Update Form (Employee)
+   ======================================== */
+
+.task-update-form {
+    max-width: 600px;
+}
+
+.task-update-form .form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.task-update-form select {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+}
+
+.task-update-form textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--radius-sm);
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+/* ========================================
+   Responsive Styles - Employee Dashboard
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .announcements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .employee-info-card {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-lg);
+    }
+    
+    .employee-details {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .employee-stats {
+        flex-direction: row;
+        justify-content: center;
+        gap: var(--spacing-lg);
+    }
+    
+    .announcements-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-members {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .employee-info-card {
+        padding: var(--spacing-md);
+    }
+    
+    .employee-details {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .employee-stats {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .emp-stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .team-member {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .employee-profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}
