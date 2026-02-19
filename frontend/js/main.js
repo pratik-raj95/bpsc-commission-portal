@@ -521,35 +521,20 @@ function openModal(modalId) {
 
 
 
-/* ===== BPSC Slider Script ===== */
 
-const slides = document.querySelectorAll('.bpsc-slider .slide');
-const nextBtn = document.querySelector('.slider-btn.next');
-const prevBtn = document.querySelector('.slider-btn.prev');
 
-let currentIndex = 0;
+// Sticky Header Shadow Effect
 
-function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove('active'));
-    slides[index].classList.add('active');
-}
+window.addEventListener("scroll", function () {
+    const header = document.querySelector(".government-header");
+    if (!header) return;
 
-nextBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % slides.length;
-    showSlide(currentIndex);
+    if (window.scrollY > 20) {
+        header.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+    } else {
+        header.style.boxShadow = "none";
+    }
 });
-
-prevBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-    showSlide(currentIndex);
-});
-
-/* Auto Slide */
-setInterval(() => {
-    currentIndex = (currentIndex + 1) % slides.length;
-    showSlide(currentIndex);
-}, 4000);
-
 
 
 
@@ -561,6 +546,39 @@ setInterval(() => {
 document.addEventListener('DOMContentLoaded', function() {
     initCommon();
     initPublicWebsite();
+
+    /* ===== SAFE BPSC Slider Script ===== */
+    const slides = document.querySelectorAll('.bpsc-slider .slide');
+    const nextBtn = document.querySelector('.slider-btn.next');
+    const prevBtn = document.querySelector('.slider-btn.prev');
+
+    if (slides.length > 0) {
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                showSlide(currentIndex);
+            });
+        }
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+        }, 4000);
+    }
 });
 
 
