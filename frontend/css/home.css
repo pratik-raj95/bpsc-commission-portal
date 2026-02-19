@@ -460,69 +460,231 @@
     font-size: 0.9rem;
 }
 
-/* ========================================
+/* ==============================
    Chairman Profile Section
-   ======================================== */
+============================== */
 
 .gov-profile-section {
-    background-color: var(--white);
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
+    background: #f4f8fb;
+    padding: 50px 30px;
+    border-radius: 12px;
+    margin-top: 40px;
 }
 
+/* Grid Layout */
 .gov-profile-grid {
     display: grid;
     grid-template-columns: 280px 1fr;
-    gap: var(--spacing-xl);
+    gap: 35px;
     align-items: start;
 }
 
+/* Image Container */
 .gov-profile-image-container {
-    display: flex;
-    justify-content: center;
+    background: linear-gradient(135deg, #e8f2f8, #dbeaf4);
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+/* ===============================
+   Top Info Section Layout
+=============================== */
+
+.top-info-section {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 25px;
+    margin-top: 30px;
+    align-items: start;   /* ⭐ IMPORTANT */
 }
 
-.gov-profile-image {
-    width: 100%;
-    max-width: 280px;
-    height: 280px;
-    object-fit: cover;
+/* Common Card Style */
+.info-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.35s ease;
+}
+
+/* ===============================
+   Chairman Card
+=============================== */
+
+.chairman-card {
+    text-align: center;
+    background: linear-gradient(135deg, #eef6fb, #ddeef7);
+    position: relative;
+    overflow: hidden;
+     padding-top: 40px; 
+}
+
+/* clickable link */
+.chairman-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* hover lift */
+.chairman-link:hover .chairman-card {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.15);
+}
+
+/* keyboard accessibility */
+.chairman-link:focus .chairman-card {
+    outline: 3px solid #0d8dbb;
+    outline-offset: 3px;
+}
+
+/* chairman photo */
+.chairman-photo {
+    width: 155px;
+    height: 155px;
     border-radius: 50%;
-    box-shadow: var(--shadow-md);
-    border: 3px solid var(--primary-blue);
+    border: 6px solid #ffffff;
+    object-fit: cover;
+    margin-bottom: 14px;
+    transition: transform 0.4s ease;
 }
 
-.gov-profile-content {
-    padding: var(--spacing-md) 0;
+/* photo zoom on hover */
+.chairman-link:hover .chairman-photo {
+    transform: scale(1.05);
 }
 
-.gov-profile-name {
-    font-size: 1.75rem;
-    font-family: var(--font-heading);
-    font-weight: 700;
-    color: var(--primary-blue);
-    margin-bottom: var(--spacing-xs);
+/* name */
+.chairman-name {
+    font-family: 'Merriweather', serif;
+    color: #1c4a6e;
+    font-size: 19px;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
 }
 
-.gov-profile-designation {
-    font-size: 1.1rem;
+/* title */
+.chairman-title {
+    color: #0073aa;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* office */
+.chairman-office {
+    color: #1c4a6e;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* ===============================
+   Card Header (Contacts & Video)
+=============================== */
+
+.card-header {
+    background: #0d8dbb;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: 0.3px;
+}
+
+/* ===============================
+   Contacts
+=============================== */
+
+.contact-person {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: center;
+}
+
+.contact-img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.contact-placeholder {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #d6d6d6;
+}
+
+.view-all {
+    display: block;
+    text-align: right;
+    color: #0d8dbb;
     font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 2px solid var(--light-blue);
+    margin-top: 8px;
+    text-decoration: none;
+    transition: 0.25s;
 }
 
-.gov-profile-bio p {
-    color: var(--text-color);
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin-bottom: var(--spacing-md);
+.view-all:hover {
+    color: #074f6b;
 }
 
-.gov-profile-bio p:last-child {
-    margin-bottom: 0;
+/* ===============================
+   Video
+=============================== */
+
+.video-wrapper {
+    margin-bottom: 15px;
+}
+
+.video-wrapper iframe {
+    width: 100%;
+    height: 155px;
+    border-radius: 8px;
+    border: none;
+}
+
+/* ===============================
+   Responsive
+=============================== */
+
+@media (max-width: 1100px) {
+    .top-info-section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .top-info-section {
+        grid-template-columns: 1fr;
+    }
+
+    .chairman-photo {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .top-info-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .gov-profile-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .gov-profile-bio {
+        text-align: left;
+    }
 }
 
 /* ========================================

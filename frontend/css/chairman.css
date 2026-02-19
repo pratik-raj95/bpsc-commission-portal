@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: #ffffff;
+    color: #222;
+}
+
+/* Breadcrumb */
+.breadcrumb-bar {
+    background: #0d8dbb;
+    color: #fff;
+    padding: 14px 30px;
+    font-size: 14px;
+}
+
+.breadcrumb-bar .divider {
+    margin: 0 8px;
+}
+
+/* Profile Section */
+.chairman-profile {
+    max-width: 900px;
+    margin: 40px auto;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* Image */
+.chairman-image {
+    width: 180px;
+    height: 220px;
+    object-fit: cover;
+    border: 6px solid #eee;
+    margin-bottom: 20px;
+}
+
+/* Name */
+.chairman-name {
+    font-family: 'Merriweather', serif;
+    font-size: 26px;
+    margin-bottom: 5px;
+}
+
+/* Designation */
+.chairman-designation {
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* Bio */
+.chairman-bio {
+    text-align: justify;
+    line-height: 1.7;
+    font-size: 16px;
+}
+
+.chairman-bio p {
+    margin-bottom: 18px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .chairman-image {
+        width: 150px;
+        height: 190px;
+    }
+
+    .chairman-name {
+        font-size: 22px;
+    }
+}
