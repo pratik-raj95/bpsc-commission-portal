@@ -260,34 +260,8 @@
 
 /* ========================================
    Task Update Form (Employee)
+   Note: .task-update-form styles are inherited from admin.css
    ======================================== */
-
-.task-update-form {
-    max-width: 600px;
-}
-
-.task-update-form .form-group {
-    margin-bottom: var(--spacing-lg);
-}
-
-.task-update-form select {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--medium-gray);
-    border-radius: var(--radius-sm);
-    font-size: 0.95rem;
-}
-
-.task-update-form textarea {
-    width: 100%;
-    padding: var(--spacing-sm);
-    border: 1px solid var(--medium-gray);
-    border-radius: var(--radius-sm);
-    min-height: 100px;
-    resize: vertical;
-    font-family: inherit;
-    font-size: 0.95rem;
-}
 
 /* ========================================
    Responsive Styles - Employee Dashboard

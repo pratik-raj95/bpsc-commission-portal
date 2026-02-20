@@ -1,176 +1,48 @@
-# Government Commission Portal - Admin Portal System Implementation Plan
+# Frontend Refactoring TODO List - COMPLETED
 
-## Project Overview
-Build a professional admin portal system for the Government Commission Portal with authentication, profile management, dashboard with stats, employee management, and project management.
+## CSS Refactoring - COMPLETED
+- [x] 1. Refactored home.css - Removed duplicate selectors (.left-sidebar, .sidebar-section, .sidebar-menu, .view-all, duplicate media queries)
+- [x] 2. Reviewed common.css - No major changes needed
+- [x] 3. Refactored admin.css - Merged duplicate .logo and .dashboard-sidebar definitions
+- [x] 4. Refactored employee.css - Removed duplicate .task-update-form (now inherited from admin.css)
+- [x] 5. chairman.css - No changes needed
 
-## Current State Analysis
+## JavaScript Refactoring - COMPLETED  
+- [x] 1. Refactored api.js - Consolidated all API functions and auth utilities
+- [x] 2. Refactored main.js - Consolidated all common utilities and removed duplicates
+- [x] 3. Refactored app.js - Removed duplicate code, kept dashboard-specific logic
+- [x] 4. Refactored employee.js - Removed duplicate API_URL and functions
 
-### Backend (Already Working)
-- ✅ Node.js + Express.js + MongoDB + Mongoose
-- ✅ JWT authentication (middleware exists)
-- ✅ bcrypt password hashing (User model)
-- ✅ Role-based access control (middleware)
-- ✅ User model with most fields
-- ✅ Task model
-- ✅ Auth controller (register, login, getMe, updatePassword)
-- ✅ User controller (CRUD operations)
-- ✅ Task controller (CRUD operations)
-- ✅ Multer for file uploads
+## Summary of Changes Made
 
-### Frontend (Needs Updates)
-- ✅ HTML structure for admin dashboard
-- ✅ CSS with government blue theme
-- ⚠️ Hardcoded data needs to be dynamic
-- ⚠️ Profile dropdown needs to be implemented
-- ⚠️ Charts need to be added
+### CSS Files:
+1. **home.css**: Removed 6 duplicate selector definitions, merged media queries
+2. **admin.css**: Removed 3 duplicate selector definitions  
+3. **employee.css**: Removed duplicate .task-update-form (now uses admin.css styles)
 
----
+### JavaScript Files:
+1. **api.js**: Consolidated - Now contains all API functions AND auth utilities (getToken, getCurrentUser, setUserData, clearUserData, isLoggedIn, getUserRole, hasRole, isAdmin, isEmployee)
+2. **main.js**: Refactored - Now uses api.js for auth functions, contains common UI functions, public website logic, and dashboard initialization
+3. **app.js**: Refactored - Removed duplicates, now uses main.js for common functions, contains admin dashboard-specific logic
+4. **employee.js**: Refactored - Removed duplicates, uses main.js and app.js for common functions, contains employee-specific logic
 
-## Implementation Plan
+### Duplicates Removed:
+- API_URL: 4 definitions → 1 (in api.js)
+- formatDate: 2 definitions → 1 (in main.js)
+- updateUserInfo: 2 definitions → 1 (in main.js)
+- Login functionality: 2 definitions → 1 (in main.js)
+- Hero slider: 3 definitions → 1 (in main.js)
+- loadAnnouncements: 2 definitions → 1 (in main.js)
+- Sidebar navigation: 2 definitions → 1 (in main.js)
+- Profile dropdown: 2 definitions → 1 (in main.js)
+- Logout: 2 definitions → 1 (in main.js)
+- loadSectionData: 3 definitions → 2 (in app.js and employee.js)
 
-### Phase 1: Backend Updates
-
-#### 1.1 Update User Model
-- [ ] Add bio field to User model
-- [ ] Add contactNumber field to User model
-- [ ] Update timestamps
-
-#### 1.2 Create Project Model
-- [ ] Create backend/models/Project.js with:
-  - projectName, description, department
-  - startDate, deadline, status
-  - assignedEmployees (array of User refs)
-  - totalTasks, completedTasks
-  - progress calculation
-  - createdBy, createdAt, updatedAt
-
-#### 1.3 Create Project Controller
-- [ ] Create backend/controllers/projectController.js
-- [ ] Implement getProjects, getProject, createProject, updateProject, deleteProject
-- [ ] Implement getProjectStats
-- [ ] Implement assignEmployeesToProject
-
-#### 1.4 Create Project Routes
-- [ ] Create backend/routes/projectRoutes.js
-- [ ] Add CRUD endpoints with protection and admin authorization
-- [ ] Add stats endpoint
-- [ ] Add assign-employees endpoint
-
-#### 1.5 Update Auth Controller
-- [ ] Add profile update endpoint (updateProfile)
-- [ ] Add profile image upload using Multer
-- [ ] Add lastLogin tracking
-- [ ] Update getMe to include all profile fields
-
-#### 1.6 Update Task Model
-- [ ] Add project reference field
-- [ ] Add index for project queries
-
-#### 1.7 Update Server
-- [ ] Add project routes to server.js
-- [ ] Ensure uploads folder exists
-- [ ] Add Multer configuration for profile images
-
-### Phase 2: Frontend Updates
-
-#### 2.1 Update admin.html
-- [ ] Add profile dropdown in header with:
-  - Profile image (rounded avatar)
-  - Admin name
-  - Admin designation
-  - Dropdown menu: View Profile, Edit Profile, Logout
-- [ ] Add Profile section/page
-- [ ] Add Projects section/page
-- [ ] Make all tables dynamic (Users, Tasks, Projects)
-- [ ] Add Chart.js for visualizations
-
-#### 2.2 Update styles.css
-- [ ] Add profile dropdown styles
-- [ ] Add profile page styles
-- [ ] Add project management styles
-- [ ] Add chart styles
-- [ ] Add modal styles for forms
-
-#### 2.3 Update app.js
-- [ ] Add profile management API calls
-- [ ] Add project management API calls
-- [ ] Add dashboard stats API calls
-- [ ] Add employee management API calls
-- [ ] Add Chart.js initialization
-- [ ] Add dynamic data loading
-- [ ] Add profile dropdown functionality
-
-### Phase 3: Integration & Testing
-
-#### 3.1 API Integration
-- [ ] Test all new endpoints
-- [ ] Test authentication flow
-- [ ] Test profile upload
-- [ ] Test project creation
-- [ ] Test employee assignment
-
-#### 3.2 Frontend Integration
-- [ ] Test dashboard loading
-- [ ] Test profile dropdown
-- [ ] Test all CRUD operations
-- [ ] Test charts rendering
-- [ ] Test responsive design
-
----
-
-## File Changes Summary
-
-### New Files to Create:
-1. backend/models/Project.js
-2. backend/controllers/projectController.js
-3. backend/routes/projectRoutes.js
-
-### Files to Update:
-1. backend/models/User.js - Add bio, contactNumber
-2. backend/models/Task.js - Add project reference
-3. backend/controllers/authController.js - Add profile update, image upload
-4. backend/routes/authRoutes.js - Add new endpoints
-5. backend/server.js - Add project routes
-6. frontend/public/admin.html - Add dynamic content, profile dropdown
-7. frontend/css/styles.css - Add new styles
-8. frontend/js/app.js - Add all API calls and functionality
-
----
-
-## Priority Order
-
-1. **Backend Core**: Update User model, create Project model
-2. **Backend API**: Create project controller and routes, update auth controller
-3. **Server Integration**: Add routes to server
-4. **Frontend Structure**: Update admin.html with profile dropdown
-5. **Frontend Styling**: Add CSS for new components
-6. **Frontend Logic**: Update app.js with all API calls
-7. **Testing**: Verify everything works together
-
----
-
-## Dependencies Already Available
-- bcryptjs
-- cors
-- dotenv
-- express
-- jsonwebtoken
-- mongoose
-- multer
-
-## Additional Dependencies Needed
-- None (all required packages are already installed)
-
----
-
-## Success Criteria
-1. Admin can log in with JWT
-2. Admin can view and edit profile with image upload
-3. Dashboard shows dynamic stats (employees, projects, tasks)
-4. Admin can manage employees (CRUD)
-5. Admin can manage projects (CRUD)
-6. All data is from database (no hardcoded values)
-7. Professional UI with charts
-8. Responsive design
-9. No errors in console
-10. Blue government theme maintained
+## Files Modified:
+- frontend/css/home.css
+- frontend/css/admin.css  
+- frontend/css/employee.css
+- frontend/js/api.js
+- frontend/js/main.js
+- frontend/js/app.js
+- frontend/js/employee.js

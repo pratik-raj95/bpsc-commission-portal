@@ -1,34 +1,69 @@
 // ========================================
 // BPSC Government Commission Portal - API Module
-// All API/Fetch calls separated for modularity
+// All API/Fetch calls - Consolidated and Optimized
 // ========================================
 
-// API Base URL
-const API_URL = 'http://localhost:3000/api';
+// API Base URL - Single definition
+const API_URL = window.API_URL || 'http://localhost:3000/api';
 
-// Get token from localStorage
+// ========================================
+// Authentication Utilities
+// ========================================
+
 function getToken() {
     return localStorage.getItem('token');
+}
+
+function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('user') || '{}');
+}
+
+function setUserData(token, user) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+function clearUserData() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+}
+
+function isLoggedIn() {
+    return !!getToken();
+}
+
+function getUserRole() {
+    const user = getCurrentUser();
+    return user.role || null;
+}
+
+function hasRole(role) {
+    return getUserRole() === role;
+}
+
+function isAdmin() {
+    const role = getUserRole();
+    return role === 'admin' || role === 'superadmin';
+}
+
+function isEmployee() {
+    return getUserRole() === 'employee';
 }
 
 // ========================================
 // Authentication API Calls
 // ========================================
 
-// Login
 async function login(email, password) {
     const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
     });
     return await response.json();
 }
 
-// Get current user
-async function getCurrentUser() {
+async function getAuthUser() {
     const token = getToken();
     const response = await fetch(`${API_URL}/auth/me`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -36,7 +71,6 @@ async function getCurrentUser() {
     return await response.json();
 }
 
-// Update profile
 async function updateProfile(formData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/auth/profile`, {
@@ -50,14 +84,11 @@ async function updateProfile(formData) {
     return await response.json();
 }
 
-// Update profile image
 async function updateProfileImage(formData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/auth/profile-image`, {
         method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
         body: formData
     });
     return await response.json();
@@ -67,7 +98,6 @@ async function updateProfileImage(formData) {
 // Users API Calls
 // ========================================
 
-// Get all users
 async function getUsers() {
     const token = getToken();
     const response = await fetch(`${API_URL}/users`, {
@@ -76,7 +106,6 @@ async function getUsers() {
     return await response.json();
 }
 
-// Get user by ID
 async function getUser(userId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/users/${userId}`, {
@@ -85,7 +114,6 @@ async function getUser(userId) {
     return await response.json();
 }
 
-// Get user stats
 async function getUserStats() {
     const token = getToken();
     const response = await fetch(`${API_URL}/users/stats`, {
@@ -94,7 +122,6 @@ async function getUserStats() {
     return await response.json();
 }
 
-// Create user
 async function createUser(userData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/users`, {
@@ -108,7 +135,6 @@ async function createUser(userData) {
     return await response.json();
 }
 
-// Update user
 async function updateUser(userId, userData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/users/${userId}`, {
@@ -122,7 +148,6 @@ async function updateUser(userId, userData) {
     return await response.json();
 }
 
-// Delete user
 async function deleteUser(userId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/users/${userId}`, {
@@ -136,7 +161,6 @@ async function deleteUser(userId) {
 // Projects API Calls
 // ========================================
 
-// Get all projects
 async function getProjects() {
     const token = getToken();
     const response = await fetch(`${API_URL}/projects`, {
@@ -145,7 +169,6 @@ async function getProjects() {
     return await response.json();
 }
 
-// Get project by ID
 async function getProject(projectId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/projects/${projectId}`, {
@@ -154,7 +177,6 @@ async function getProject(projectId) {
     return await response.json();
 }
 
-// Get project stats
 async function getProjectStats() {
     const token = getToken();
     const response = await fetch(`${API_URL}/projects/stats`, {
@@ -163,7 +185,6 @@ async function getProjectStats() {
     return await response.json();
 }
 
-// Create project
 async function createProject(projectData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/projects`, {
@@ -177,7 +198,6 @@ async function createProject(projectData) {
     return await response.json();
 }
 
-// Update project
 async function updateProject(projectId, projectData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/projects/${projectId}`, {
@@ -191,7 +211,6 @@ async function updateProject(projectId, projectData) {
     return await response.json();
 }
 
-// Delete project
 async function deleteProject(projectId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/projects/${projectId}`, {
@@ -205,7 +224,6 @@ async function deleteProject(projectId) {
 // Tasks API Calls
 // ========================================
 
-// Get all tasks
 async function getTasks() {
     const token = getToken();
     const response = await fetch(`${API_URL}/tasks`, {
@@ -214,7 +232,6 @@ async function getTasks() {
     return await response.json();
 }
 
-// Get task by ID
 async function getTask(taskId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/tasks/${taskId}`, {
@@ -223,7 +240,6 @@ async function getTask(taskId) {
     return await response.json();
 }
 
-// Get task stats
 async function getTaskStats() {
     const token = getToken();
     const response = await fetch(`${API_URL}/tasks/stats`, {
@@ -232,7 +248,6 @@ async function getTaskStats() {
     return await response.json();
 }
 
-// Create task
 async function createTask(taskData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/tasks`, {
@@ -246,7 +261,6 @@ async function createTask(taskData) {
     return await response.json();
 }
 
-// Update task
 async function updateTask(taskId, taskData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/tasks/${taskId}`, {
@@ -260,7 +274,6 @@ async function updateTask(taskId, taskData) {
     return await response.json();
 }
 
-// Delete task
 async function deleteTask(taskId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/tasks/${taskId}`, {
@@ -274,13 +287,11 @@ async function deleteTask(taskId) {
 // Announcements API Calls
 // ========================================
 
-// Get all announcements (public)
 async function getAnnouncements() {
     const response = await fetch(`${API_URL}/announcements`);
     return await response.json();
 }
 
-// Get announcements (admin with auth)
 async function getAnnouncementsAdmin() {
     const token = getToken();
     const response = await fetch(`${API_URL}/announcements`, {
@@ -289,7 +300,6 @@ async function getAnnouncementsAdmin() {
     return await response.json();
 }
 
-// Get announcement by ID
 async function getAnnouncement(announcementId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/announcements/${announcementId}`, {
@@ -298,7 +308,6 @@ async function getAnnouncement(announcementId) {
     return await response.json();
 }
 
-// Create announcement
 async function createAnnouncement(announcementData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/announcements`, {
@@ -312,7 +321,6 @@ async function createAnnouncement(announcementData) {
     return await response.json();
 }
 
-// Update announcement
 async function updateAnnouncement(announcementId, announcementData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/announcements/${announcementId}`, {
@@ -326,7 +334,6 @@ async function updateAnnouncement(announcementId, announcementData) {
     return await response.json();
 }
 
-// Delete announcement
 async function deleteAnnouncement(announcementId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/announcements/${announcementId}`, {
@@ -340,7 +347,6 @@ async function deleteAnnouncement(announcementId) {
 // Documents API Calls
 // ========================================
 
-// Get all documents
 async function getDocuments() {
     const token = getToken();
     const response = await fetch(`${API_URL}/documents`, {
@@ -349,20 +355,16 @@ async function getDocuments() {
     return await response.json();
 }
 
-// Upload document
 async function uploadDocument(formData) {
     const token = getToken();
     const response = await fetch(`${API_URL}/documents`, {
         method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
         body: formData
     });
     return await response.json();
 }
 
-// Delete document
 async function deleteDocument(documentId) {
     const token = getToken();
     const response = await fetch(`${API_URL}/documents/${documentId}`, {
@@ -377,8 +379,16 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         API_URL,
         getToken,
-        login,
         getCurrentUser,
+        setUserData,
+        clearUserData,
+        isLoggedIn,
+        getUserRole,
+        hasRole,
+        isAdmin,
+        isEmployee,
+        login,
+        getAuthUser,
         updateProfile,
         updateProfileImage,
         getUsers,

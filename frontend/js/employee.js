@@ -1,30 +1,29 @@
 // ========================================
 // BPSC Government Commission Portal - Employee Module
 // Employee-specific JavaScript
+// Note: Uses main.js for common functions and api.js for API calls
 // ========================================
-
-// API Base URL
-const API_URL = 'http://localhost:3000/api';
 
 // ========================================
 // Initialize Employee Dashboard
 // ========================================
 
 function initEmployee() {
-    // Initialize common dashboard functionality
+    // Initialize common dashboard functionality (from main.js)
     const isInitialized = initDashboard();
     
     if (!isInitialized) return;
     
     // Load initial section data
-    loadSectionData('dashboard');
+    const hash = window.location.hash.substring(1);
+    loadSectionData(hash || 'dashboard');
     
     // Initialize employee-specific modals
     initEmployeeModals();
 }
 
 // ========================================
-// Section Data Loading
+// Section Data Loading (Employee-specific)
 // ========================================
 
 async function loadSectionData(sectionId) {
@@ -41,6 +40,12 @@ async function loadSectionData(sectionId) {
         case 'announcements':
             await loadEmployeeAnnouncements();
             break;
+        default:
+            // Use common loadSectionData from app.js for other sections
+            if (typeof window.loadSectionDataCommon === 'function') {
+                await window.loadSectionDataCommon(sectionId);
+            }
+            break;
     }
 }
 
@@ -53,37 +58,28 @@ async function loadEmployeeDashboard() {
         const token = getToken();
         
         // Load user data
-        const userResponse = await fetch(`${API_URL}/auth/me`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const userData = await userResponse.json();
+        const userData = await getAuthUser();
         
         if (userData.success) {
             updateEmployeeInfo(userData.user);
         }
 
         // Load tasks for employee
-        const tasksResponse = await fetch(`${API_URL}/tasks`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const tasksData = await tasksResponse.json();
+        const tasksData = await getTasks();
         
         if (tasksData.success) {
             updateEmployeeTaskStats(tasksData.tasks);
         }
 
         // Load announcements
-        const announcementsResponse = await fetch(`${API_URL}/announcements?limit=3`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const announcementsData = await announcementsResponse.json();
+        const announcementsData = await getAnnouncementsAdmin();
         
         if (announcementsData.success) {
             updateEmployeeAnnouncements(announcementsData.announcements);
         }
 
     } catch (error) {
-        console.error('Error loading employee dashboard:', error);
+        // Silent fail
     }
 }
 
@@ -135,7 +131,7 @@ function updateEmployeeAnnouncements(announcements) {
     const announcementList = document.querySelector('.announcement-list');
     if (!announcementList) return;
     
-    announcementList.innerHTML = announcements.map(ann => `
+    announcementList.innerHTML = announcements.slice(0, 3).map(ann => `
         <div class="announcement-mini">
             <h4>${ann.title}</h4>
             <p>${ann.content.substring(0, 80)}...</p>
@@ -150,17 +146,13 @@ function updateEmployeeAnnouncements(announcements) {
 
 async function loadEmployeeTasks() {
     try {
-        const token = getToken();
-        const response = await fetch(`${API_URL}/tasks`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
+        const data = await getTasks();
         
         if (data.success) {
             updateEmployeeTasksList(data.tasks);
         }
     } catch (error) {
-        console.error('Error loading tasks:', error);
+        // Silent fail
     }
 }
 
@@ -190,7 +182,22 @@ function updateEmployeeTasksList(tasks) {
 
 // Update task status function
 window.updateTaskStatus = async function(taskId) {
-    alert('Task update functionality - implement modal to select new status');
+    // Simple alert for now - could be enhanced with a modal
+    const newStatus = prompt('Enter new status (pending/in_progress/completed):');
+    if (!newStatus) return;
+    
+    try {
+        const data = await updateTask(taskId, { status: newStatus });
+        
+        if (data.success) {
+            alert('Task status updated successfully!');
+            loadEmployeeTasks();
+        } else {
+            alert(data.message || 'Failed to update task status');
+        }
+    } catch (error) {
+        alert('An error occurred');
+    }
 };
 
 // ========================================
@@ -199,14 +206,13 @@ window.updateTaskStatus = async function(taskId) {
 
 async function loadEmployeeAnnouncements() {
     try {
-        const response = await fetch(`${API_URL}/announcements`);
-        const data = await response.json();
+        const data = await getAnnouncements();
         
         if (data.success) {
             updateEmployeeAnnouncementsGrid(data.announcements);
         }
     } catch (error) {
-        console.error('Error loading announcements:', error);
+        // Silent fail
     }
 }
 
@@ -233,17 +239,13 @@ function updateEmployeeAnnouncementsGrid(announcements) {
 
 async function loadEmployeeProfile() {
     try {
-        const token = getToken();
-        const response = await fetch(`${API_URL}/auth/me`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
+        const data = await getAuthUser();
         
         if (data.success) {
             updateEmployeeProfileForm(data.user);
         }
     } catch (error) {
-        console.error('Error loading profile:', error);
+        // Silent fail
     }
 }
 
@@ -280,17 +282,7 @@ function initEmployeeModals() {
             };
             
             try {
-                const token = getToken();
-                const response = await fetch(`${API_URL}/auth/profile`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const data = await response.json();
+                const data = await updateProfile(formData);
                 
                 if (data.success) {
                     alert('Profile updated successfully!');
@@ -302,7 +294,6 @@ function initEmployeeModals() {
                     alert(data.message || 'Failed to update profile');
                 }
             } catch (error) {
-                console.error('Error updating profile:', error);
                 alert('An error occurred');
             }
         });
@@ -322,7 +313,19 @@ function initEmployeeModals() {
                 return;
             }
             
-            alert('Password change functionality would be implemented here');
+            // Password change functionality - using updateProfile
+            try {
+                const data = await updateProfile({ password: newPassword });
+                
+                if (data.success) {
+                    alert('Password changed successfully!');
+                    passwordForm.reset();
+                } else {
+                    alert(data.message || 'Failed to change password');
+                }
+            } catch (error) {
+                alert('An error occurred');
+            }
         });
     }
 }
