@@ -154,11 +154,15 @@ function initCommon() {
 function updateAuthUI() {
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
+    const headerLoginBtn = document.getElementById('headerLoginBtn');
     
     if (isLoggedIn()) {
         // User is logged in - show logout, hide login
         if (loginBtn) {
             loginBtn.style.display = 'none';
+        }
+        if (headerLoginBtn) {
+            headerLoginBtn.style.display = 'none';
         }
         if (logoutBtn) {
             logoutBtn.style.display = 'inline-block';
@@ -167,6 +171,9 @@ function updateAuthUI() {
         // User is not logged in - show login, hide logout
         if (loginBtn) {
             loginBtn.style.display = 'inline-block';
+        }
+        if (headerLoginBtn) {
+            headerLoginBtn.style.display = 'inline-flex';
         }
         if (logoutBtn) {
             logoutBtn.style.display = 'none';
@@ -201,6 +208,25 @@ function initPublicWebsite() {
     if (loginBtn) {
         loginBtn.addEventListener('click', () => {
             loginModal.classList.add('active');
+        });
+    }
+
+    // Header Login Button - Open modal
+    const headerLoginBtn = document.getElementById('headerLoginBtn');
+    if (headerLoginBtn) {
+        headerLoginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+        });
+    }
+
+    // Header Logout Button - Handle logout
+    const headerLogoutBtn = document.getElementById('headerLogoutBtn');
+    if (headerLogoutBtn) {
+        headerLogoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                handlePublicLogout();
+            }
         });
     }
 

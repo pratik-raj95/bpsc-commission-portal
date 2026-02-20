@@ -35,22 +35,22 @@
     --font-heading: 'Merriweather', Georgia, serif;
     --font-body: 'Roboto', Arial, sans-serif;
     
-    /* Spacing */
+    /* Spacing - Government style: compact */
     --spacing-xs: 5px;
-    --spacing-sm: 10px;
-    --spacing-md: 15px;
-    --spacing-lg: 20px;
-    --spacing-xl: 30px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 15px;
+    --spacing-xl: 20px;
     
-    /* Border Radius */
-    --radius-sm: 2px;
-    --radius-md: 4px;
-    --radius-lg: 8px;
+    /* Border Radius - Government style: NO radius */
+    --radius-sm: 0;
+    --radius-md: 0;
+    --radius-lg: 0;
     
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-md: 0 2px 6px rgba(0,0,0,0.15);
-    --shadow-lg: 0 4px 12px rgba(0,0,0,0.2);
+    /* Shadows - Government style: NO shadows, use borders instead */
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
     
     /* Sidebar width */
     --sidebar-width: 250px;
@@ -186,6 +186,10 @@ a:hover {
     line-height: 1;
 }
 
+.modal-close:hover {
+    color: var(--text-color);
+}
+
 .modal-content h2 {
     margin-bottom: var(--spacing-lg);
     text-align: center;
@@ -209,6 +213,7 @@ a:hover {
     border: 1px solid var(--medium-gray);
     border-radius: var(--radius-sm);
     font-size: 0.95rem;
+    font-family: var(--font-body);
 }
 
 .form-group input:focus,
@@ -826,235 +831,4 @@ a:hover {
     .container {
         padding: 0 var(--spacing-sm);
     }
-}
-
-
-
-
-
-/* ========================================
-   OFFICIAL BPSC STYLE HEADER
-======================================== */
-
-.government-header {
-    background: linear-gradient(to right, #e6f0f8, #ffffff);
-}
-
-/* Main Header Layout */
-.header-main {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 0;
-}
-
-/* Left Logo */
-.bpsc-logo {
-    width: 90px;
-}
-
-/* Center Title */
-.header-center {
-    text-align: center;
-    flex: 1;
-}
-
-.header-center h1 {
-    font-size: 32px;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.header-center p {
-    font-size: 16px;
-    color: #555;
-}
-
-/* Right Section */
-.header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-}
-
-/* Language */
-.language-switch {
-    display: flex;
-    gap: 8px;
-}
-
-.lang-btn {
-    padding: 5px 10px;
-    border: none;
-    background: #1a5aa3;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.lang-btn.active {
-    background: #0f3c75;
-}
-
-/* Ashoka */
-.ashoka-emblem {
-    width: 50px;
-}
-
-/* Social Icons */
-.social-icons {
-    display: flex;
-    gap: 12px;
-}
-
-.social-icons a {
-    font-size: 18px;
-    color: #1a5aa3;
-    transition: 0.3s;
-}
-
-.social-icons a:hover {
-    color: #0f3c75;
-}
-
-/* Notice Bar */
-.notice-bar {
-    background: #0f3c75;
-    color: #fff;
-    padding: 8px 0;
-    font-weight: 500;
-}
-
-
-
-
-
-/* ========================================
-   ORIGINAL BPSC STYLE HEADER
-======================================== */
-
-.government-header {
-    background: #f3f6f9;
-}
-
-/* Layout */
-.header-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 0;
-}
-
-/* Left Blue Strip */
-.header-left-strip {
-    width: 140px;
-    height: 120px;
-    background: linear-gradient(to bottom, #69c0d9, #1a5aa3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bpsc-logo {
-    width: 85px;
-}
-
-/* Center */
-.header-center {
-    text-align: center;
-    flex: 1;
-}
-
-.header-center h1 {
-    font-size: 34px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.header-center p {
-    font-size: 16px;
-    color: #555;
-}
-
-/* Right */
-.header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-}
-
-/* Language + Ashoka same line */
-.top-controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.language-switch {
-    font-size: 15px;
-}
-
-.lang {
-    cursor: pointer;
-}
-
-.lang.active {
-    background: #1a5aa3;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.divider {
-    margin: 0 5px;
-}
-
-/* Ashoka */
-.ashoka-emblem {
-    width: 45px;
-}
-
-/* Social Icons (Red like original) */
-.social-icons {
-    display: flex;
-    gap: 12px;
-}
-
-.social-icons a {
-    font-size: 18px;
-    transition: 0.3s;
-}
-
-.social-icons .fb { color: #1877f2; }
-.social-icons .x { color: #000; }
-.social-icons .insta { color: #e1306c; }
-.social-icons .yt { color: #ff0000; }
-
-.social-icons a:hover {
-    transform: scale(1.15);
-}
-
-/* Notice Bar */
-.notice-bar {
-    background: #0f3c75;
-    color: #fff;
-    padding: 8px 0;
-    font-weight: 500;
-}
-/* Login Button in Header */
-.login-btn {
-    background: #1a5aa3;
-    color: #fff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.login-btn:hover {
-    background: #0f3c75;
 }
