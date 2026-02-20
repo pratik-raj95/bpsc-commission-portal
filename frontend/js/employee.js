@@ -68,7 +68,8 @@ async function loadEmployeeDashboard() {
         const tasksData = await getTasks();
         
         if (tasksData.success) {
-            updateEmployeeTaskStats(tasksData.tasks);
+           updateEmployeeTaskStats(tasksData.tasks);
+renderEmployeeTasks(tasksData.tasks);
         }
 
         // Load announcements
@@ -127,6 +128,42 @@ function updateEmployeeTaskStats(tasks) {
     }
 }
 
+function renderEmployeeTasks(tasks) {
+
+    const dashboardTable = document.getElementById("employeeDashboardTasks");
+    const fullTable = document.getElementById("employeeTasksTable");
+
+    if (!tasks || tasks.length === 0) {
+        if (dashboardTable)
+            dashboardTable.innerHTML = `<tr><td colspan="7">No tasks assigned</td></tr>`;
+        if (fullTable)
+            fullTable.innerHTML = `<tr><td colspan="7">No tasks assigned</td></tr>`;
+        return;
+    }
+
+    const rows = tasks.map(task => `
+        <tr>
+            <td>${task.taskId || task._id.slice(-5)}</td>
+            <td>${task.title}</td>
+            <td>${task.assignedBy?.fullName || 'Admin'}</td>
+            <td><span class="priority ${task.priority}">${task.priority}</span></td>
+            <td><span class="status ${task.status}">
+                ${task.status.replace('_',' ')}
+            </span></td>
+            <td>${formatDate(task.dueDate)}</td>
+            <td>
+                <button class="action-btn primary"
+                onclick="updateTaskStatus('${task._id}')">
+                Update
+                </button>
+            </td>
+        </tr>
+    `).join("");
+
+    if (dashboardTable) dashboardTable.innerHTML = rows.slice(0,3);
+    if (fullTable) fullTable.innerHTML = rows;
+}
+
 function updateEmployeeAnnouncements(announcements) {
     const announcementList = document.querySelector('.announcement-list');
     if (!announcementList) return;
@@ -157,27 +194,7 @@ async function loadEmployeeTasks() {
 }
 
 function updateEmployeeTasksList(tasks) {
-    const tbody = document.querySelector('#tasks .data-table tbody');
-    if (!tbody) return;
-    
-    if (tasks.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No tasks found</td></tr>';
-        return;
-    }
-    
-    tbody.innerHTML = tasks.map(task => `
-        <tr>
-            <td>${task.taskId || '-'}</td>
-            <td>${task.title}</td>
-            <td>${task.description ? task.description.substring(0, 50) + '...' : '-'}</td>
-            <td><span class="priority ${task.priority}">${task.priority}</span></td>
-            <td><span class="status ${task.status}">${task.status.replace('_', ' ')}</span></td>
-            <td>${formatDate(task.dueDate)}</td>
-            <td>
-                <button class="action-btn primary" onclick="updateTaskStatus('${task._id}')">Update</button>
-            </td>
-        </tr>
-    `).join('');
+    renderEmployeeTasks(tasks);
 }
 
 // Update task status function
@@ -343,3 +360,4 @@ document.addEventListener('DOMContentLoaded', function() {
         initEmployee();
     }
 });
+

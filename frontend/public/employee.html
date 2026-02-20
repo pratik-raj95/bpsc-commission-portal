@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard - BPSC Portal</title>
-    <link rel="stylesheet" href="../css/employee.css">
+   <link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="../css/admin.css">
+<link rel="stylesheet" href="../css/employee.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="dashboard-body">
@@ -21,7 +23,7 @@
             <button class="notification-btn">🔔 <span class="badge">2</span></button>
             <div class="user-profile" id="userProfile">
                 <img src="https://via.placeholder.com/40" alt="Employee" class="user-avatar">
-                <span class="user-name">John Sharma</span>
+                <span class="user-name" id="headerUserName">Employee</span>
                 <span class="dropdown-arrow">▼</span>
             </div>
         </div>
@@ -90,10 +92,10 @@
                     <div class="employee-details">
                         <img src="https://via.placeholder.com/80" alt="Employee" class="employee-photo">
                         <div class="employee-text">
-                            <h2>John Sharma</h2>
-                            <p class="designation">Senior Accountant</p>
-                            <p class="department">Department: Finance</p>
-                            <p class="employee-id">Employee ID: BPSC101</p>
+                          <h2 id="dashboardUserName">Employee</h2>
+<p class="designation"></p>
+<p class="department"></p>
+<p class="employee-id"></p>
                         </div>
                     </div>
                     <div class="employee-stats">
@@ -132,41 +134,8 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>TSK001</td>
-                                        <td>Prepare Quarterly Financial Report</td>
-                                        <td>Admin Officer</td>
-                                        <td><span class="priority high">High</span></td>
-                                        <td><span class="status in-progress">In Progress</span></td>
-                                        <td>22 Jan 2024</td>
-                                        <td>
-                                            <button class="action-btn primary">Update</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>TSK004</td>
-                                        <td>Budget Proposal Review</td>
-                                        <td>Chief Secretary</td>
-                                        <td><span class="priority urgent">Urgent</span></td>
-                                        <td><span class="status pending">Pending</span></td>
-                                        <td>18 Jan 2024</td>
-                                        <td>
-                                            <button class="action-btn primary">Update</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>TSK005</td>
-                                        <td>Monthly Account Reconciliation</td>
-                                        <td>Admin Officer</td>
-                                        <td><span class="priority medium">Medium</span></td>
-                                        <td><span class="status pending">Pending</span></td>
-                                        <td>25 Jan 2024</td>
-                                        <td>
-                                            <button class="action-btn primary">Update</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                               <tbody id="employeeDashboardTasks">
+</tbody>
                             </table>
                         </div>
                     </div>
@@ -288,41 +257,8 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>TSK001</td>
-                                    <td>Prepare Quarterly Financial Report</td>
-                                    <td>Prepare and submit the quarterly financial report for Q4 2023</td>
-                                    <td><span class="priority high">High</span></td>
-                                    <td><span class="status in-progress">In Progress</span></td>
-                                    <td>22 Jan 2024</td>
-                                    <td>
-                                        <button class="action-btn primary">Update</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>TSK004</td>
-                                    <td>Budget Proposal Review</td>
-                                    <td>Review and validate the budget proposal for FY 2024-2025</td>
-                                    <td><span class="priority urgent">Urgent</span></td>
-                                    <td><span class="status pending">Pending</span></td>
-                                    <td>18 Jan 2024</td>
-                                    <td>
-                                        <button class="action-btn primary">Update</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>TSK005</td>
-                                    <td>Monthly Account Reconciliation</td>
-                                    <td>Reconcile all accounts for the month of December 2023</td>
-                                    <td><span class="priority medium">Medium</span></td>
-                                    <td><span class="status pending">Pending</span></td>
-                                    <td>25 Jan 2024</td>
-                                    <td>
-                                        <button class="action-btn primary">Update</button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                          <tbody id="employeeTasksTable">
+</tbody>
                         </table>
                     </div>
                 </div>
@@ -499,5 +435,7 @@
     </div>
 
     <script src="../js/app.js"></script>
+    <script src="../js/api.js"></script>  <!-- ✅ ADD THIS -->
+    <script src="../js/employee.js"></script>
 </body>
 </html>

@@ -77,6 +77,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  createdBy: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'User'
+},
   updatedAt: {
     type: Date,
     default: Date.now

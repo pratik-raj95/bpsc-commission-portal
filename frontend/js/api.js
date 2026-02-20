@@ -420,3 +420,19 @@ if (typeof module !== 'undefined' && module.exports) {
         deleteDocument
     };
 }
+
+// expose API functions globally
+Object.assign(window, {
+  getTasks,
+  getTask,
+  createTask,
+  updateTask,
+  deleteTask,
+  getAuthUser,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  getAnnouncements,
+  getAnnouncementsAdmin
+});
