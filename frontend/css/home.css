@@ -109,14 +109,14 @@
 ================================ */
 
 .left-sidebar {
-    position: sticky;
-    top: 120px;
-    height: calc(100vh - 120px);
-    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
     background: #1a4d8f;
-    padding: 0;
-    border-radius: 0;
-    box-shadow: none;
+    overflow-y: auto;
+    z-index: 1000;
 }
 
 .sidebar-section {
@@ -240,8 +240,15 @@
     display: grid;
     grid-template-columns: 240px 1fr 300px;
     gap: 0;
+    
+}
+.content-wrapper {
+    margin-left: 250px;
 }
 
+.government-header {
+    margin-left: 250px;
+}
 /* ========================================
    Main Content Area
    ======================================== */
@@ -1162,4 +1169,36 @@
     .top-info-section {
         grid-template-columns: 1fr 1fr;
     }
+}
+/* Sidebar Login Button */
+.sidebar-login {
+    padding: 15px;
+    background: #143c6d;
+    text-align: center;
+}
+
+.sidebar-login-btn {
+    width: 100%;
+    padding: 10px;
+    background: #ffffff;
+    color: #1a5aa3;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.sidebar-login-btn:hover {
+    background: #e6f0f8;
+}
+
+.sidebar-logo {
+    background: linear-gradient(to bottom, #69c0d9, #1a5aa3);
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.sidebar-logo img {
+    width: 95px;
 }
