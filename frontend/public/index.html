@@ -7,57 +7,66 @@
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/home.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
 </head>
 <body>
     <!-- Header -->
-    <header class="government-header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-top-content">
-                    <div class="logo-section">
-                        <img src="/assets/images/logo.png" alt="Bihar Government Emblem" class="emblem">
-                        <div class="header-title">
-                            <h1>Bihar public service commision technical</h1>
-                            <p class="subtitle">बिहार लोक सेवा आयोग (तकनीकी)</p>
-                        </div>
-                    </div>
-                    <div class="header-actions">
-                        <select class="language-select" id="languageSelect">
-                            <option value="en">English</option>
-                            <option value="hi">हिंदी</option>
-                        </select>
-                        <button class="btn btn-primary" id="loginBtn">Login</button>
-                        <button class="btn btn-secondary" id="logoutBtn" style="display: none;">Logout</button>
-                    </div>
-                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-                        <span class="hamburger-line"></span>
-                        <span class="hamburger-line"></span>
-                        <span class="hamburger-line"></span>
-                    </button>
-                </div>
-            </div>
+   <header class="government-header">
+
+    <div class="header-wrapper container">
+
+        <!-- LEFT BLUE STRIP + LOGO -->
+        <div class="header-left-strip">
+            <img src="/assets/images/logo.png" class="bpsc-logo">
         </div>
-        
-        <!-- Mobile Navigation Menu -->
-        <nav class="mobile-nav" id="mobileNav">
-            <ul class="mobile-nav-menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#announcements">Announcements</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="mobile-nav-divider"></li>
-                <li><a href="#">Online Application</a></li>
-                <li><a href="#">Check Application Status</a></li>
-                <li><a href="#">Download Admit Card</a></li>
-                <li><a href="#">Result Directory</a></li>
-                <li><a href="#">Answer Keys</a></li>
-            </ul>
-        </nav>
 
-    </header>
+        <!-- CENTER TITLE -->
+        <div class="header-center">
+            <h1>Bihar Public Service Commission</h1>
+            <p>15, Nehru Path (Bailey Road), Patna – 800001 (Bihar)</p>
+        </div>
 
-    <!-- Notice Strip -->
+        <!-- RIGHT SECTION -->
+        <div class="header-right">
+
+            <div class="top-controls">
+                <div class="language-switch">
+                    <span class="lang active">English</span>
+                    <span class="divider">|</span>
+                    <span class="lang">हिन्दी</span>
+                </div>
+
+                <img src="/assets/images/ashoka.png" class="ashoka-emblem">
+            </div>
+
+            <!-- SOCIAL ICONS (Red style like original) -->
+            <div class="social-icons">
+                <a href="#" class="fb"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="x"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="insta"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="yt"><i class="fab fa-youtube"></i></a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- NOTICE STRIP -->
+    <div class="notice-bar">
+        <div class="container">
+            <marquee>
+                Important Notice: Facility to edit GENDER in OTR (One Time Registration)
+            </marquee>
+        </div>
+    </div>
+
+</header>
+
+
+
+    <!-- Notice Strip 
     <div class="notice-strip">
         <div class="container">
             <div class="notice-content">
@@ -75,7 +84,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!-- Main Content -->
     <div class="main-container">
