@@ -219,6 +219,17 @@ function initPublicWebsite() {
         });
     }
 
+    // Header Logout Button - Handle logout
+    const headerLogoutBtn = document.getElementById('headerLogoutBtn');
+    if (headerLogoutBtn) {
+        headerLogoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                handlePublicLogout();
+            }
+        });
+    }
+
     // Close modal
     if (closeModal) {
         closeModal.addEventListener('click', () => {
