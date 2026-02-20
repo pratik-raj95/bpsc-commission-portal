@@ -1044,3 +1044,17 @@ a:hover {
     padding: 8px 0;
     font-weight: 500;
 }
+/* Login Button in Header */
+.login-btn {
+    background: #1a5aa3;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.login-btn:hover {
+    background: #0f3c75;
+}
