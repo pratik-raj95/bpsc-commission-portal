@@ -13,7 +13,7 @@ exports.getTasks = async (req, res) => {
     
     // If employee, show only their tasks
     if (req.user.role === 'employee') {
-      query.assignedTo = req.user.id;
+     query.assignedTo = req.user._id;
     }
     
     // Filter by status

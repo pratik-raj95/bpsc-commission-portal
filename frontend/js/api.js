@@ -4,7 +4,9 @@
 // ========================================
 
 // API Base URL - Single definition
-const API_URL = window.API_URL || 'http://localhost:3000/api';
+if (!window.API_URL) {
+  window.API_URL = 'http://localhost:3000/api';
+}
 
 // ========================================
 // Authentication Utilities
