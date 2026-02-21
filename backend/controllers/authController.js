@@ -35,7 +35,7 @@ exports.register = async (req, res) => {
       role: userRole
     });
 
-    const token = generateToken(user._id);
+    const token = generateToken(user);
 
     res.status(201).json({
       success: true,
