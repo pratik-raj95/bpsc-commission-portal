@@ -14,26 +14,31 @@
    Dashboard Header
    ======================================== */
 
-.dashboard-header {
-    background-color: var(--primary-blue);
-    color: var(--white);
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    box-shadow: var(--shadow-md);
-    height: 100px;
+.dashboard-header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:130px;
+    display:flex;
+    align-items:center;
+    padding:0 40px;
+    background: linear-gradient(to right, #e3f2fd, #ffffff);
+    border-bottom:4px solid #1e73be;
 }
 
-.header-left {
-    display: flex;
-    align-items: center;
+.header-left{
+    flex:1;
+    display:flex;
+    align-items:center;
     gap: var(--spacing-lg);
+}
+
+.header-right{
+    flex:1;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
 }
 
 .menu-toggle {
@@ -52,11 +57,11 @@
     gap: 12px;
 }
 
-.emblem-small {
-    width: 40px;
-    height: 45px;
+.emblem-small{
+    width:95px !important;
+    height:auto !important;
+    max-height:none !important;
 }
-
 .logo-text {
     font-family: var(--font-heading);
     font-size: 1.2rem;
@@ -70,14 +75,36 @@
 
 .logo-main {
     font-family: var(--font-heading);
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
-    color: white;
+    color: #1f2d3d;
 }
 
+.logo-text-group{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    text-align:center;
+}
+
+.logo-main{
+    font-family:'Merriweather', serif;
+    font-size:26px;
+    font-weight:900;
+    color:#1f2d3d;
+    letter-spacing:0.5px;
+}
+
+.logo-sub{
+    font-size:18px;
+    font-weight:700;
+    color:#333;
+}
+
+
 .logo-sub {
-    font-size: 12px;
-    color: #cfd8dc;
+    font-size: 14px;
+    color: #555;
 }
 
 .header-right {
@@ -235,8 +262,8 @@
 
 .dashboard-container {
     display: flex;
-    margin-top: 100px;
-    min-height: calc(100vh - 100px);
+    margin-top: 130px;
+min-height: calc(100vh - 110px);
 }
 
 /* ========================================
@@ -245,10 +272,10 @@
 
 .dashboard-sidebar {
     width: var(--sidebar-width);
-    background-color: var(--primary-blue);
+    background: #1f4e79;
     color: white;
     position: fixed;
-    top: 100px;
+    top: 130px;
     left: 0;
     bottom: 0;
     overflow-y: auto;
@@ -266,9 +293,12 @@
     border-bottom: 1px solid var(--light-gray);
 }
 
-.sidebar-nav li.active,
-.sidebar-nav li:hover {
-    background-color: var(--secondary-blue);
+.sidebar-nav li:hover{
+    background:#1565c0;
+}
+
+.sidebar-nav li.active{
+    background:#0d47a1;
 }
 
 .sidebar-nav a {
@@ -280,11 +310,14 @@
     transition: all 0.3s;
 }
 
+.sidebar-nav a{
+    color:white;
+}
+
 .sidebar-nav a:hover,
-.sidebar-nav li.active a {
-    background-color: var(--light-blue);
-    color: var(--primary-blue);
-    text-decoration: none;
+.sidebar-nav li.active a{
+    color:white;
+    text-decoration:none;
 }
 
 .nav-icon {
@@ -307,9 +340,10 @@
 
 .dashboard-main {
     flex: 1;
-    margin-left: var(--sidebar-width);
+    margin-left: 250px;
     padding: var(--spacing-xl);
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 130px);
+    background:#f4f6f9;
 }
 
 .dashboard-section {
@@ -793,4 +827,68 @@
     .stat-card {
         padding: var(--spacing-xs);
     }
+}
+
+/* ===== HEADER POLISH ===== */
+
+.dashboard-header{
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.logo-main{
+    letter-spacing:0.5px;
+}
+
+.search-box input{
+    border:1px solid #d0d7de;
+    background:#f8fafc;
+}
+
+.notification-btn{
+    font-size:1.3rem;
+}
+
+/* ===== SIDEBAR UPGRADE ===== */
+
+.dashboard-sidebar{
+    background: linear-gradient(to bottom, #1f4e79, #173a5e);
+}
+
+.sidebar-nav li{
+    transition: all 0.3s ease;
+}
+
+.sidebar-nav li:hover{
+    padding-left:25px;
+}
+
+.sidebar-nav li.active{
+    box-shadow: inset 4px 0 0 #ffffff;
+}
+
+/* ===== CONTENT AREA ===== */
+
+.dashboard-main{
+    background:#eef2f6;
+}
+
+/* ===== CARD IMPROVEMENT ===== */
+
+.dashboard-card,
+.stat-card,
+.profile-header-card{
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    transition:all 0.3s ease;
+}
+
+.dashboard-card:hover,
+.stat-card:hover{
+    transform:translateY(-3px);
+}
+
+.section-header h1{
+    font-family:'Merriweather', serif;
+    font-size:28px;
+    color:#1f2d3d;
 }
