@@ -10,9 +10,15 @@
 
 function initEmployee() {
     // Initialize common dashboard functionality (from main.js)
-    const isInitialized = initDashboard();
-    
-    if (!isInitialized) return;
+    function initEmployee() {
+
+    // Load initial section data
+    const hash = window.location.hash.substring(1);
+    loadSectionData(hash || 'dashboard');
+
+    // Initialize employee-specific modals
+    initEmployeeModals();
+}
     
     // Load initial section data
     const hash = window.location.hash.substring(1);
@@ -141,27 +147,49 @@ function renderEmployeeTasks(tasks) {
         return;
     }
 
-    const rows = tasks.map(task => `
-        <tr>
-            <td>${task.taskId || task._id.slice(-5)}</td>
-            <td>${task.title}</td>
-            <td>${task.assignedBy?.fullName || 'Admin'}</td>
-            <td><span class="priority ${task.priority}">${task.priority}</span></td>
-            <td><span class="status ${task.status}">
-                ${task.status.replace('_',' ')}
-            </span></td>
-            <td>${formatDate(task.dueDate)}</td>
-            <td>
-                <button class="action-btn primary"
-                onclick="updateTaskStatus('${task._id}')">
-                Update
-                </button>
-            </td>
-        </tr>
-    `).join("");
+    // ✅ DASHBOARD (show only 3 tasks)
+    if (dashboardTable) {
+        dashboardTable.innerHTML = tasks.slice(0,3).map(task => `
+            <tr>
+                <td>${task.taskId || task._id.slice(-5)}</td>
+                <td>${task.title}</td>
+                <td>${task.assignedBy?.fullName || 'Admin'}</td>
+                <td><span class="priority ${task.priority}">${task.priority}</span></td>
+                <td><span class="status ${task.status}">
+                    ${task.status.replace('_',' ')}
+                </span></td>
+                <td>${formatDate(task.dueDate)}</td>
+                <td>
+                    <button class="action-btn primary"
+                    onclick="updateTaskStatus('${task._id}')">
+                    Update
+                    </button>
+                </td>
+            </tr>
+        `).join("");
+    }
 
-    if (dashboardTable) dashboardTable.innerHTML = rows.slice(0,3);
-    if (fullTable) fullTable.innerHTML = rows;
+    // ✅ FULL TASK PAGE
+    if (fullTable) {
+        fullTable.innerHTML = tasks.map(task => `
+            <tr>
+                <td>${task.taskId || task._id.slice(-5)}</td>
+                <td>${task.title}</td>
+                <td>${task.assignedBy?.fullName || 'Admin'}</td>
+                <td><span class="priority ${task.priority}">${task.priority}</span></td>
+                <td><span class="status ${task.status}">
+                    ${task.status.replace('_',' ')}
+                </span></td>
+                <td>${formatDate(task.dueDate)}</td>
+                <td>
+                    <button class="action-btn primary"
+                    onclick="updateTaskStatus('${task._id}')">
+                    Update
+                    </button>
+                </td>
+            </tr>
+        `).join("");
+    }
 }
 
 function updateEmployeeAnnouncements(announcements) {
@@ -351,13 +379,6 @@ function initEmployeeModals() {
 // Initialize Employee on DOM Ready
 // ========================================
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if we're on employee dashboard
-    const dashboardBody = document.querySelector('.dashboard-body');
-    const employeeHeader = document.querySelector('.logo-text');
-    
-    if (dashboardBody && employeeHeader && employeeHeader.textContent.includes('Employee')) {
-        initEmployee();
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    initEmployee();
 });
-
