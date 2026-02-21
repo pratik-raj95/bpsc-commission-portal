@@ -54,6 +54,10 @@ app.get('/employee', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/employee.html'));
 });
 
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/contact.html'));
+});
+
 // Static files for frontend - Public (fallback for any other static files)
 // This comes AFTER route handlers so they take precedence
 app.use(express.static(path.join(__dirname, '../frontend/public')));
